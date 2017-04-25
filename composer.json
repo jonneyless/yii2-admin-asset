@@ -1,0 +1,41 @@
+{
+    "name": "jonneyless/yii2-admin-asset",
+    "description": "Yii2 Admin Template Asset",
+    "keywords": [
+        "yii2",
+        "admin",
+        "template",
+        "asset",
+        "jonneyless"
+    ],
+    "homepage": "https://github.com/jonneyless/yii2-admin-asset",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "support": {
+        "source": "https://github.com/jonneyless/yii2-admin-asset"
+    },
+    "authors": [
+        {
+            "name": "jony",
+            "email": "jonneyless@163.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": ">=2.0.6",
+        "onokumus/metismenu": "^2.7.0",
+        "bower-asset/fontawesome": "^4.7.0",
+        "bower-asset/summernote": "^0.8.3",
+        "bower-asset/jasny-bootstrap": "^3.1.3",
+        "bower-asset/pace": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ijony\\admin\\": ""
+        }
+    },
+    "config": {
+        "process-timeout": 1800
+    }
+}
