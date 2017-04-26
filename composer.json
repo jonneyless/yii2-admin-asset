@@ -9,10 +9,10 @@
         "jonneyless"
     ],
     "homepage": "https://github.com/jonneyless/yii2-admin-asset",
-    "type": "yii2-extension",
+    "type": "yii2-theme",
     "license": "MIT",
     "support": {
-        "source": "https://github.com/jonneyless/yii2-admin-asset"
+        "source": "https://github.com/jonneyless/yii2-admin-asset.git"
     },
     "authors": [
         {
