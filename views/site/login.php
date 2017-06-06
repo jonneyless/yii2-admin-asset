@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
             <?= $form->field($model, 'username')->label(false)->textInput(['autofocus' => true, 'placeholder' => '账 号']) ?>
             <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => '密 码']) ?>
+            <?= $form->field($model, 'rememberMe')->checkbox() ?>
             <?= Html::submitButton('登录', ['class' => 'btn btn-primary block full-width m-b', 'name' => 'login-button']) ?>
         <?php ActiveForm::end(); ?>
     </div>

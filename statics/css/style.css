@@ -1254,10 +1254,21 @@ body {
 }
 .lockscreen.middle-box {
     width: 200px;
-    padding-top: 110px;
+    padding-top: 0px;
+    padding-bottom: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .loginscreen.middle-box {
     width: 300px;
+    padding-top: 0px;
+    padding-bottom: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .loginColumns {
     max-width: 800px;

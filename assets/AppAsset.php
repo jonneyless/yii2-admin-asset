@@ -1,6 +1,6 @@
 <?php
 
-namespace mtweb\assets;
+namespace ijony\admin\assets;
 
 use Yii;
 use yii\web\AssetBundle;

@@ -3,7 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use mtweb\assets\AppAsset;
+use ijony\admin\assets\AppAsset;
 use yii\helpers\Html;
 
 AppAsset::register($this);
