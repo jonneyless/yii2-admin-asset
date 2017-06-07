@@ -70,6 +70,18 @@ class Sidebar extends Widget
         if(!$this->rolename){
             $this->rolename = '管理员';
         }
+
+        if(!Yii::$app->user->getIsGuest()){
+            $user = Yii::$app->user->getIdentity();
+
+            if(isset($user->avatar)){
+                $this->avatar = \ijony\helpers\Url::getStatic($user->avatar);
+            }
+
+            if(method_exists($user, 'getRoleName')){
+                $this->rolename = $user->getRoleName();
+            }
+        }
     }
 
     /**
