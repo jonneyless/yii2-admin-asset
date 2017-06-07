@@ -8,7 +8,6 @@ use ijony\admin\widgets\Sidebar;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
-use yii\widgets\Pjax;
 
 AppAsset::register($this, $this->context->getPlugins());
 ?>
@@ -34,7 +33,9 @@ AppAsset::register($this, $this->context->getPlugins());
 <?php $this->beginBody() ?>
 
 <div id="wrapper">
-    <?= Sidebar::widget(); ?>
+    <?= Sidebar::widget([
+        'items' => $this->context->getMenus()
+    ]); ?>
 
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom white-bg">
