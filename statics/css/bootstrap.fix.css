@@ -682,10 +682,6 @@ button.dim:active:before {
     text-align: center;
 }
 
-.note-editor.note-frame {
-    border: 1px solid #e7eaec;
-}
-
 .form-group .panel{
     margin-bottom: 0px;
 }

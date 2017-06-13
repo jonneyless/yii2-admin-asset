@@ -70,9 +70,7 @@ AppAsset::register($this, $this->context->getPlugins());
                 <?php if(isset($this->params['buttons'])){ ?>
                 <div class="buttons">
                     <?php foreach($this->params['buttons'] as $button){ ?>
-                    <?php if($this->context->checkButton($button)){ ?>
                     <?= Html::a($button['label'], $button['url'], $button['options']) ?>
-                    <?php } ?>
                     <?php } ?>
                 </div>
                 <?php } ?>
@@ -80,7 +78,7 @@ AppAsset::register($this, $this->context->getPlugins());
         </div>
         <?php } ?>
 
-        <div class="wrapper-content">
+        <div class="wrapper-content animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
                     <?= $content ?>

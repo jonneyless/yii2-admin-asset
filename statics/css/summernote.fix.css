@@ -1,0 +1,12 @@
+.panel-heading.note-toolbar{
+    border-bottom: 1px solid #e7eaec;
+}
+
+.note-editor.note-frame{
+    border: 1px solid #e7eaec;
+}
+
+.note-editor.note-frame .note-editing-area .note-editable{
+    border: none;
+    border-bottom: 1px solid #e7eaec;
+}
