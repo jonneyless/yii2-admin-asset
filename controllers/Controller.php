@@ -13,18 +13,6 @@ use Yii;
 class Controller extends \yii\web\Controller
 {
 
-    public $plugins = [
-        'before' => [
-            'fontawesome',
-            'pace',
-            'metisMenu',
-            'slimscroll',
-        ],
-        'after' => [
-            'common',
-        ],
-    ];
-
     /**
      * @inheritdoc
      */
@@ -32,8 +20,6 @@ class Controller extends \yii\web\Controller
     {
         parent::init();
 
-        $this->view->params['plugins'] = [];
-        $this->view->params['route'] = '';
         $this->view->params['footer']['left'] = '<div class="copyright"><strong>Copyright</strong> ijony.com © 2017</div>';
         $this->view->params['footer']['right'] = '';
     }
@@ -41,11 +27,6 @@ class Controller extends \yii\web\Controller
     public function getMenus()
     {
 
-    }
-
-    public function getPlugins()
-    {
-        return $this->view->params['plugins'];
     }
 
     /**
