@@ -1343,3 +1343,36 @@ body {
 
 
 /* Auth List end */
+
+/* tag block begin */
+
+.tag-input{
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    color: inherit;
+    display: block;
+    padding: 5px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+    font-size: 14px;
+}
+
+.tag-input span{
+    display: inline-block;
+    padding: 0px 5px;
+    border: 1px solid #e5e6e7;
+    border-radius: 3px;
+    background: #eeeff0;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.tag-input input{
+    display: inline-block;
+    width: 60px;
+    border: none;
+}
+
+/* tag block end */

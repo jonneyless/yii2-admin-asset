@@ -17,6 +17,11 @@ use yii\web\View;
 class ActiveField extends \yii\bootstrap\ActiveField
 {
 
+    /**
+     * 文件上传
+     *
+     * @return $this
+     */
     public function file()
     {
         $inputName = Html::getInputName($this->model, $this->attribute);
@@ -41,8 +46,11 @@ HTML;
         return $this;
     }
 
-
-
+    /**
+     * 单图上传
+     *
+     * @return $this
+     */
     public function image()
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
@@ -99,6 +107,13 @@ JS;
         return $this;
     }
 
+    /**
+     * 级联下拉表单
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
     public function select($options = [])
     {
         $inputName = Html::getInputName($this->model, $this->attribute);
@@ -169,6 +184,14 @@ JS;
         return $this;
     }
 
+    /**
+     * 起止输入表单
+     *
+     * @param       $endAttr
+     * @param array $options
+     *
+     * @return $this
+     */
     public function between($endAttr, $options = [])
     {
         $hasTime = true;
@@ -210,6 +233,14 @@ JS;
         return $this;
     }
 
+    /**
+     * 起止时间表单
+     *
+     * @param       $endAttr
+     * @param array $options
+     *
+     * @return $this
+     */
     public function betweenDate($endAttr, $options = [])
     {
         $hasTime = true;
@@ -350,6 +381,11 @@ JS;
         return $this;
     }
 
+    /**
+     * 日期选择
+     *
+     * @return $this
+     */
     public function date()
     {
         $dateTemplate = "Y-m-d";
@@ -416,6 +452,13 @@ JS;
         return $this;
     }
 
+    /**
+     * 编辑器
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
     public function editor($options = [])
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
@@ -436,6 +479,52 @@ JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote_' . $inputId);
         SummerNoteFixAsset::register(Yii::$app->getView());
+
+        return $this;
+    }
+
+    public function tags($options = [])
+    {
+        $inputId = Html::getInputId($this->model, $this->attribute);
+        $inputName = Html::getInputName($this->model, $this->attribute) . '[]';
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = <<<HTML
+        
+        <div id="tags" class="tag-input"><span>测试<input type="hidden" name="$inputName" value="测试" /></span><input id="$inputId" type="text" placeholder="添加..." /></div>
+
+HTML;
+
+        $js = <<<JS
+        
+$('#$inputId').keyup(function(e){
+    var tag = $(this).val();
+    
+    if(e.which == 13){
+        $('#tags span.exist').removeClass('exist');
+        
+        if($('#tags input[value="' + tag + '"]').length > 0){
+            $('#tags input[value="' + tag + '"]').parent('span').addClass('exist');
+        }else{
+            $(this).before($('<span>').text(tag).append($('<input>').attr('type', 'hidden').attr('name', '$inputName').val(tag)));
+        }
+    
+        $(this).val('');
+    }
+    
+    event.stopPropagation();
+    return false;
+});
+
+$(document).on('click', '#tags span', function(){
+    $(this).remove();
+});
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote_' . $inputId);
 
         return $this;
     }
