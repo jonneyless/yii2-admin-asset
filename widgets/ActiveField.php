@@ -493,20 +493,20 @@ JS;
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = <<<HTML
         
-        <div id="tags" class="tag-input"><span>测试<input type="hidden" name="$inputName" value="测试" /></span><input id="$inputId" type="text" placeholder="添加..." /></div>
+        <div id="tags" class="tag-input"><input id="$inputId" type="text" placeholder="添加..." /></div>
 
 HTML;
 
         $js = <<<JS
-        
-$('#$inputId').keyup(function(e){
-    var tag = $(this).val();
+
+$("#$inputId").keyup(function(e){
+    var tag = $.trim($(this).val());
     
     if(e.which == 13){
-        $('#tags span.exist').removeClass('exist');
-        
         if($('#tags input[value="' + tag + '"]').length > 0){
-            $('#tags input[value="' + tag + '"]').parent('span').addClass('exist');
+            $('#tags input[value="' + tag + '"]').parent('span').addClass('exist wobble animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                $(this).removeClass();
+            });
         }else{
             $(this).before($('<span>').text(tag).append($('<input>').attr('type', 'hidden').attr('name', '$inputName').val(tag)));
         }
@@ -516,6 +516,10 @@ $('#$inputId').keyup(function(e){
     
     event.stopPropagation();
     return false;
+});
+
+$('#tags').click(function(){
+    $("#$inputId").focus();
 });
 
 $(document).on('click', '#tags span', function(){
