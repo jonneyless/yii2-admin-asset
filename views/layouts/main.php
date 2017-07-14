@@ -38,10 +38,10 @@ AppAsset::register($this);
     ]); ?>
 
     <div id="page-wrapper" class="gray-bg">
-        <div class="row border-bottom white-bg">
+        <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation">
                 <div class="navbar-header">
-                    <a class="navbar-minimalize btn btn-primary" href="#" onclick="$('#wrapper').toggleClass('sidebar-toggle')"><i class="fa fa-bars"></i></a>
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i> </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="no-small">欢迎使用后台系统。</li>

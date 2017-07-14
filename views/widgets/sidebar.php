@@ -6,21 +6,30 @@ use yii\helpers\Url;
 
 ?>
 
-<div id="sidebar">
-    <div class="sidebar-header">
-        <div class="dropdown profile">
-            <img class="img-circle" src="<?= $avatar ?>" />
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <strong class="block font-bold"><?= $username ?></strong>
-                <span class="block text-muted"><?= $rolename ?> <b class="caret"></b></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="<?= Url::to(['admin/reset']) ?>">修改密码</a></li>
-                <li class="divider"></li>
-                <li><a href="<?= Url::to(['site/logout']) ?>">注销</a></li>
-            </ul>
-        </div>
-    </div>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <span><img alt="image" class="img-circle" src="<?= $avatar ?>" /></span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear">
+                            <span class="block m-t-xs"><strong class="font-bold"><?= $username ?></strong></span>
+                            <span class="text-muted text-xs block"><?= $rolename ?> <b class="caret"></b></span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="<?= Url::to(['admin/reset']) ?>">修改密码</a></li>
+                        <li class="divider"></li>
+                        <li><a href="<?= Url::to(['site/logout']) ?>">注销</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
 
-    <?= $sidebarNav ?>
-</div>
+            <?= $sidebarNav ?>
+        </ul>
+    </div>
+</nav>

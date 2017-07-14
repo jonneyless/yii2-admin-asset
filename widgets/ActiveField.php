@@ -281,7 +281,7 @@ JS;
             $endValue = is_integer($endValue) ? date($dateTemplate, $endValue) : $endValue;
         }
 
-        $template = '<div class="input-daterange input-group datepicker">%s<span class="input-group-addon">到</span>%s</div>';
+        $template = '<div class="input-daterange input-group">%s<span class="input-group-addon">到</span>%s</div>';
 
         if(!isset($options['class'])){
             $options['class'] = 'form-control form-control-inline';
@@ -299,11 +299,17 @@ JS;
 
         $js = <<<JS
         
-$('.datepicker').datepicker();
+$('.input-daterange').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true,
+    toggleActive: true,
+    language: 'zh-CN'
+});
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker');
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker-daterange');
         DatepickerAsset::register(Yii::$app->getView());
 
         return $this;
@@ -353,13 +359,19 @@ JS;
                 ]
             ),
             [
-                'class' => 'input-group datepicker'
+                'class' => 'input-group date'
             ]
         );
 
         $js = <<<JS
         
-$('.datepicker').datepicker();
+$('.input-group.date').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true,
+    toggleActive: true,
+    language: 'zh-CN'
+});
 
 JS;
 
