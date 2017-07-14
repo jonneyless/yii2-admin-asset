@@ -15,10 +15,33 @@ use yii\web\View;
 /**
  * 动态表单重构类
  *
+ * @inheritdoc
  * @package common\widgets
  */
 class ActiveField extends \yii\bootstrap\ActiveField
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $inline = true;
+
+    /**
+     * @inheritdoc
+     */
+    public $checkboxTemplate = "<div class=\"checkbox\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
+    /**
+     * @inheritdoc
+     */
+    public $radioTemplate = "<div class=\"radio\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
+    /**
+     * @inheritdoc
+     */
+    public $horizontalCheckboxTemplate = "{beginWrapper}\n<div class=\"checkbox\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n</div>\n{error}\n{endWrapper}\n{hint}";
+    /**
+     * @inheritdoc
+     */
+    public $horizontalRadioTemplate = "{beginWrapper}\n<div class=\"radio\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n</div>\n{error}\n{endWrapper}\n{hint}";
 
     /**
      * @inheritdoc
@@ -445,6 +468,82 @@ JS;
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
         TagsinputFixAsset::register(Yii::$app->getView());
 
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function checkboxList($items, $options = [])
+    {
+        $inline = $this->inline;
+        $inputId = Html::getInputId($this->model, $this->attribute);
+
+        if ($this->inline) {
+            if (!isset($options['class'])) {
+                $options['class'] = 'checkbox-group';
+            }
+        }
+
+        if (!isset($options['item'])) {
+            $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
+                $inputId = $inputId . '-' . $index;
+                $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
+
+                $wapperClass[] = 'checkbox';
+                if(isset($itemOptions['wapperClass'])){
+                    $wapperClass[] = $itemOptions['wapperClass'];
+                    unset($itemOptions['wapperClass']);
+                }
+
+                if($inline){
+                    $wapperClass[] = 'checkbox-inline';
+                }
+
+                return '<div class="' . join(" ", $wapperClass) . '">' . Html::input('checkbox', $name, $value, $options) . Html::label($label, $inputId) . '</div>';
+            };
+        }
+
+        parent::checkboxList($items, $options);
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function radioList($items, $options = [])
+    {
+        $inline = $this->inline;
+        $inputId = Html::getInputId($this->model, $this->attribute);
+
+        if ($this->inline) {
+            if (!isset($options['class'])) {
+                $options['class'] = 'radio-group';
+            }
+        }
+
+        if (!isset($options['item'])) {
+            $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
+                $inputId = $inputId . '-' . $index;
+                $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
+
+                $wapperClass[] = 'radio';
+                if(isset($itemOptions['wapperClass'])){
+                    $wapperClass[] = $itemOptions['wapperClass'];
+                    unset($itemOptions['wapperClass']);
+                }
+
+                if($inline){
+                    $wapperClass[] = 'radio-inline';
+                }
+
+                return '<div class="' . join(" ", $wapperClass) . '">' . Html::input('radio', $name, $value, $options) . Html::label($label, $inputId) . '</div>';
+            };
+        }
+
+        parent::radioList($items, $options);
         return $this;
     }
 }

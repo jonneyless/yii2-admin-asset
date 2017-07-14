@@ -57,3 +57,11 @@ ul.notes li div small {
 .sk-spinner-wave.sk-spinner {
     font-size: 12px;
 }
+
+/* bootstrap form begin */
+
+.checkbox-group {
+    padding: 7px 0px;
+}
+
+/* bootstrap form end */
