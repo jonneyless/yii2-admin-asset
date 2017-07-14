@@ -78,7 +78,7 @@ AppAsset::register($this);
         </div>
         <?php } ?>
 
-        <div class="wrapper-content animated fadeInRight">
+        <div class="wrapper-content animated fadeIn">
             <div class="row">
                 <div class="col-lg-12">
                     <?= $content ?>

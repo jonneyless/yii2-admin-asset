@@ -1241,11 +1241,6 @@ button.dim:active:before {
   padding: 3px 20px 3px 5px;
   position: relative;
 }
-/* Tags Input Plugin */
-.bootstrap-tagsinput {
-  border: 1px solid #e5e6e7;
-  box-shadow: none;
-}
 /* PAGINATIN */
 .pagination > .active > a,
 .pagination > .active > span,
@@ -3565,26 +3560,6 @@ video {
   margin-bottom: 5px;
   /* Only for demo */
   width: 24%;
-}
-/* Summernote text editor  */
-.note-editor {
-  height: auto !important;
-}
-.note-editor.fullscreen {
-  z-index: 2050;
-}
-.note-editor.note-frame.fullscreen {
-  z-index: 2020;
-}
-.note-editor.note-frame .note-editing-area .note-editable {
-  color: #676a6c;
-  padding: 15px;
-}
-.note-editor.note-frame {
-  border: none;
-}
-.note-editor.panel {
-  margin-bottom: 0;
 }
 /* MODAL */
 .modal-content {

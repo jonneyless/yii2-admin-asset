@@ -12,8 +12,8 @@ class AppAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'css/bootstrap.fix.css',
         'css/style.css',
+        'css/custom.css',
     ];
     public $js = [
         'js/common.js',

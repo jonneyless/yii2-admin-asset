@@ -6,7 +6,7 @@ use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\ICheckAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
-use ijony\admin\assets\TagsinputAsset;
+use ijony\admin\assets\TagsinputFixAsset;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
@@ -453,7 +453,7 @@ $('#$inputId').tagsinput({
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
-        TagsinputAsset::register(Yii::$app->getView());
+        TagsinputFixAsset::register(Yii::$app->getView());
 
         return $this;
     }

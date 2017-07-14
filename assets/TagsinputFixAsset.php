@@ -6,15 +6,15 @@ use Yii;
 use yii\web\AssetBundle;
 
 /**
- * Summer Note Fix asset bundle.
+ * Tagsinput Fix asset bundle.
  */
-class SummerNoteFixAsset extends AssetBundle
+class TagsinputFixAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'css/fix/summernote.css',
+        'css/fix/tagsinput.css',
     ];
     public $depends = [
-        'ijony\admin\assets\SummerNoteAsset',
+        'ijony\admin\assets\TagsinputAsset',
     ];
 }
