@@ -13,7 +13,6 @@ class AppAsset extends AssetBundle
     public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
         'css/bootstrap.fix.css',
-        'css/animate.css',
         'css/style.css',
     ];
     public $js = [
@@ -22,6 +21,7 @@ class AppAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapPluginAsset',
+        'ijony\admin\assets\AnimateCssAsset',
         'ijony\admin\assets\FontAwesomeAsset',
         'ijony\admin\assets\PaceAsset',
         'ijony\admin\assets\MetisMenuAsset',

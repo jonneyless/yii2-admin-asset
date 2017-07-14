@@ -2,6 +2,7 @@
 
 namespace ijony\admin\widgets;
 
+use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
 use Yii;
@@ -280,16 +281,7 @@ JS;
             $endValue = is_integer($endValue) ? date($dateTemplate, $endValue) : $endValue;
         }
 
-        $template = '%s &nbsp; 到 &nbsp; %s';
-
-        if($this->form->layout == 'default'){
-            $template = '<div>%s &nbsp; 到 &nbsp; %s</div>';
-        }
-
-        if(isset($options['template'])){
-            $template = $options['template'];
-            unset($options['template']);
-        }
+        $template = '<div class="input-daterange input-group datepicker">%s<span class="input-group-addon">到</span>%s</div>';
 
         if(!isset($options['class'])){
             $options['class'] = 'form-control form-control-inline';
@@ -297,86 +289,22 @@ JS;
 
         $options['id'] = $beginInputId;
 
-        $beginInput = Html::tag(
-            'div',
-            Html::textInput($beginInputName, $beginValue, $options) .
-            Html::tag(
-                'span',
-                Html::button(
-                    Html::tag(
-                        'span',
-                        '',
-                        [
-                            'class' => 'glyphicon glyphicon-calendar',
-                            'aria-hidden' => 'true',
-                        ]
-                    ),
-                    [
-                        'class' => 'btn btn-default',
-                        'onclick' => "laydate({elem: '#".$beginInputId."', format: '$layTemplate', istime: $layIsTime, istoday: false});"
-                    ]
-                ),
-                [
-                    'class' => 'input-group-btn'
-                ]
-            ),
-            [
-                'class' => 'input-group input-group-inline'
-            ]
-        );
+        $beginInput = Html::textInput($beginInputName, $beginValue, $options);
 
         $options['id'] = $endInputId;
 
-        $endInput = Html::tag(
-            'div',
-            Html::textInput($endInputName, $endValue, $options) .
-            Html::tag(
-                'span',
-                Html::button(
-                    Html::tag(
-                        'span',
-                        '',
-                        [
-                            'class' => 'glyphicon glyphicon-calendar',
-                            'aria-hidden' => 'true',
-                        ]
-                    ),
-                    [
-                        'class' => 'btn btn-default',
-                        'onclick' => "laydate({elem: '#".$endInputId."', format: '$layTemplate', istime: $layIsTime, istoday: false});"
-                    ]
-                ),
-                [
-                    'class' => 'input-group-btn'
-                ]
-            ),
-            [
-                'class' => 'input-group input-group-inline'
-            ]
-        );
+        $endInput = Html::textInput($endInputName, $endValue, $options);
 
         $this->parts['{input}'] = sprintf($template, $beginInput, $endInput);
 
         $js = <<<JS
         
-laydate({
-    elem: '#$beginInputId',
-    format: '$layTemplate',
-    istime: $layIsTime,
-    istoday: false
-});
-
-laydate({
-    elem: '#$endInputId',
-    format: '$layTemplate',
-    istime: $layIsTime,
-    istoday: false
-});
+$('.datepicker').datepicker();
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'between_date_' . $beginInputId);
-        Yii::$app->getView()->params['plugins'][] = 'laydate';
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker');
+        DatepickerAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -412,42 +340,31 @@ JS;
             Html::textInput($inputName, $inputValue, $options) .
             Html::tag(
                 'span',
-                Html::button(
-                    Html::tag(
-                        'span',
-                        '',
-                        [
-                            'class' => 'glyphicon glyphicon-calendar',
-                            'aria-hidden' => 'true',
-                        ]
-                    ),
+                Html::tag(
+                    'i',
+                    '',
                     [
-                        'class' => 'btn btn-default',
-                        'onclick' => "laydate({elem: '#".$inputId."', format: '$layTemplate', istime: false, istoday: false});"
+                        'class' => 'fa fa-calendar',
+                        'aria-hidden' => 'true',
                     ]
                 ),
                 [
-                    'class' => 'input-group-btn'
+                    'class' => 'input-group-addon'
                 ]
             ),
             [
-                'class' => 'input-group'
+                'class' => 'input-group datepicker'
             ]
         );
 
         $js = <<<JS
         
-laydate({
-    elem: '#$inputId',
-    format: '$layTemplate',
-    istime: false,
-    istoday: false
-});
+$('.datepicker').datepicker();
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'date_' . $inputId);
-        Yii::$app->getView()->params['plugins'][] = 'laydate';
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker');
+        DatepickerAsset::register(Yii::$app->getView());
 
         return $this;
     }
