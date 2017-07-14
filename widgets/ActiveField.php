@@ -3,7 +3,7 @@
 namespace ijony\admin\widgets;
 
 use ijony\admin\assets\DatepickerAsset;
-use ijony\admin\assets\ICheckAsset;
+use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
 use ijony\admin\assets\TagsinputFixAsset;
@@ -27,17 +27,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
     {
         parent::__construct($config);
 
-        $js = <<<JS
-        
-$('.i-checks').iCheck({
-    checkboxClass: 'icheckbox_square-green',
-    radioClass: 'iradio_square-green'
-});
-
-JS;
-
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'icheck');
-        ICheckAsset::register(Yii::$app->getView());
+        AwesomeBootstrapCheckboxAsset::register(Yii::$app->getView());
 
     }
 

@@ -1,0 +1,59 @@
+
+.dropdown-messages li em,
+.dropdown-alerts li em {
+    font-size: 12px;
+}
+
+.nav .label,
+.ibox .label {
+    font-size: 12px;
+}
+
+.animation-text-info {
+    font-size: 12px;
+}
+
+.todo-list.small-list .btn-xs,
+.todo-list.small-list .btn-group-xs > .btn {
+    font-size: 12px;
+}
+
+.link-block a {
+    font-size: 12px;
+}
+
+.simple_tag {
+    font-size: 12px;
+}
+
+ul.notes li div small {
+    font-size: 12px;
+}
+
+.tag-list li a {
+    font-size: 12px;
+}
+
+.project-manager .tag-list li a {
+    font-size: 12px;
+}
+
+.faq-item .tag-item {
+    font-size: 12px;
+}
+
+.message-date {
+    font-size: 12px;
+}
+
+.product-main-price small {
+    font-size: 12px;
+}
+
+.small-chat-box .chat-date {
+    font-size: 12px;
+}
+
+.sk-spinner-wave.sk-spinner {
+    font-size: 12px;
+}
