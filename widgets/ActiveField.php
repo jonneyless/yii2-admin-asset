@@ -3,8 +3,10 @@
 namespace ijony\admin\widgets;
 
 use ijony\admin\assets\DatepickerAsset;
+use ijony\admin\assets\ICheckAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
+use ijony\admin\assets\TagsinputAsset;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
@@ -17,6 +19,27 @@ use yii\web\View;
  */
 class ActiveField extends \yii\bootstrap\ActiveField
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+
+        $js = <<<JS
+        
+$('.i-checks').iCheck({
+    checkboxClass: 'icheckbox_square-green',
+    radioClass: 'iradio_square-green'
+});
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'icheck');
+        ICheckAsset::register(Yii::$app->getView());
+
+    }
 
     /**
      * 文件上传
@@ -415,49 +438,22 @@ JS;
     public function tags($options = [])
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
-        $inputName = Html::getInputName($this->model, $this->attribute) . '[]';
 
         $options = array_merge($this->inputOptions, $options);
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
-        $this->parts['{input}'] = <<<HTML
-        
-        <div id="tags" class="tag-input"><input id="$inputId" type="text" placeholder="添加..." /></div>
-
-HTML;
+        $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
 
         $js = <<<JS
 
-$("#$inputId").keyup(function(e){
-    var tag = $.trim($(this).val());
-    
-    if(e.which == 13){
-        if($('#tags input[value="' + tag + '"]').length > 0){
-            $('#tags input[value="' + tag + '"]').parent('span').addClass('exist wobble animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this).removeClass();
-            });
-        }else{
-            $(this).before($('<span>').text(tag).append($('<input>').attr('type', 'hidden').attr('name', '$inputName').val(tag)));
-        }
-    
-        $(this).val('');
-    }
-    
-    event.stopPropagation();
-    return false;
-});
-
-$('#tags').click(function(){
-    $("#$inputId").focus();
-});
-
-$(document).on('click', '#tags span', function(){
-    $(this).remove();
+$('#$inputId').tagsinput({
+    tagClass: 'label label-primary'
 });
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote_' . $inputId);
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
+        TagsinputAsset::register(Yii::$app->getView());
 
         return $this;
     }
