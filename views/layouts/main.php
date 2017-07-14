@@ -39,7 +39,7 @@ AppAsset::register($this);
 
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
-            <nav class="navbar navbar-static-top" role="navigation">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i> </a>
                 </div>
@@ -55,7 +55,7 @@ AppAsset::register($this);
         </div>
 
         <?php if(isset($this->params['breadcrumbs']) || isset($this->params['buttons'])){ ?>
-        <div class="row border-bottom white-bg page-header">
+        <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-6">
                 <?php if(isset($this->params['breadcrumbs'])){ ?>
                 <h2><?= $this->title ?></h2>
