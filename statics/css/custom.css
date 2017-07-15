@@ -66,6 +66,10 @@ ul.notes li div small {
 
 /* bootstrap form end */
 
+.form-control, .single-line {
+    border-radius: 3px;
+}
+
 /* page header begin */
 
 .page-heading .buttons {
