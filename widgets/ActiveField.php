@@ -7,6 +7,7 @@ use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SelectAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
+use ijony\admin\assets\SwitheryAsset;
 use ijony\admin\assets\TagsinputFixAsset;
 use Yii;
 use yii\bootstrap\Html;
@@ -539,6 +540,62 @@ JS;
 
         parent::checkboxList($items, $options);
         return $this;
+    }
+
+    /**
+     * @param array $options
+     * @param bool  $enclosedByLabel
+     *
+     * @return $this
+     */
+    public function switchery($options = [], $enclosedByLabel = true)
+    {
+        if ($enclosedByLabel) {
+            if (!isset($options['template'])) {
+                $this->template = $this->form->layout === 'horizontal' ?
+                    $this->horizontalCheckboxTemplate : $this->checkboxTemplate;
+            } else {
+                $this->template = $options['template'];
+                unset($options['template']);
+            }
+            if (isset($options['label'])) {
+                $this->parts['{labelTitle}'] = $options['label'];
+            }
+            if ($this->form->layout === 'horizontal') {
+                Html::addCssClass($this->wrapperOptions, $this->horizontalCssClasses['offset']);
+            }
+            $this->labelOptions['class'] = null;
+        }
+
+        $color = '#1AB394';
+        $class = 'is-switchery';
+
+        if(isset($options['color'])){
+            $color = $options['color'];
+            unset($options['color']);
+
+            $class = Html::getInputId($this->model, $this->attribute);
+        }
+
+        if(!isset($options['class'])){
+            $options['class'] = $class;
+        }else{
+            $options['class'] .= ' ' . $class;
+        }
+
+        $js = <<<JS
+        
+var elem = document.querySelector('.$class');
+var switchery = new Switchery(elem, {
+    color: '$color'
+});
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'switchery_' . $class);
+        SwitheryAsset::register(Yii::$app->getView());
+
+        return parent::checkbox($options, false);
     }
 
     /**

@@ -25,5 +25,6 @@ class AppAsset extends AssetBundle
         'ijony\admin\assets\FontAwesomeAsset',
         'ijony\admin\assets\PaceAsset',
         'ijony\admin\assets\MetisMenuAsset',
+        'ijony\admin\assets\ToastrAsset',
     ];
 }
