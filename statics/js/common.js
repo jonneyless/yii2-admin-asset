@@ -7,11 +7,11 @@ $(document).ready(function(){
 
     $('#side-menu').metisMenu();
 
-//    $('.sidebar-container').slimScroll({
-//        height: '100%',
-//        railOpacity: 0.4,
-//        wheelStep: 10
-//    });
+    $('.sidebar-container').slimScroll({
+        height: '100%',
+        railOpacity: 0.4,
+        wheelStep: 10
+    });
 
     $('.navbar-minimalize').on('click', function(event){
         event.preventDefault();
@@ -45,14 +45,14 @@ $(document).ready(function(){
 
     fix_height();
 
-//    $(window).bind("load", function () {
-//        if ($("body").hasClass('fixed-sidebar')) {
-//            $('.sidebar-collapse').slimScroll({
-//                height: '100%',
-//                railOpacity: 0.9
-//            });
-//        }
-//    });
+    $(window).bind("load", function () {
+        if ($("body").hasClass('fixed-sidebar')) {
+            $('.sidebar-collapse').slimScroll({
+                height: '100%',
+                railOpacity: 0.9
+            });
+        }
+    });
 
     $(window).bind("resize", function(){
         if($(this).width() < 769){
@@ -67,6 +67,13 @@ $(document).ready(function(){
             fix_height();
         }
     });
+
+    $(document).tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    });
+
+    $("[data-toggle=popover]").popover();
 
     toastr.options = {
         "closeButton": true,
