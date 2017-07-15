@@ -26,5 +26,6 @@ class AppAsset extends AssetBundle
         'ijony\admin\assets\PaceAsset',
         'ijony\admin\assets\MetisMenuAsset',
         'ijony\admin\assets\ToastrAsset',
+        'ijony\admin\assets\JQueryPinAsset',
     ];
 }
