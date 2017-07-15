@@ -7,7 +7,7 @@ use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SelectAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
-use ijony\admin\assets\SwitheryAsset;
+use ijony\admin\assets\SwitcheryAsset;
 use ijony\admin\assets\TagsinputFixAsset;
 use Yii;
 use yii\bootstrap\Html;
@@ -548,25 +548,8 @@ JS;
      *
      * @return $this
      */
-    public function switchery($options = [], $enclosedByLabel = true)
+    public function switchery($enableValue, $options = [])
     {
-        if ($enclosedByLabel) {
-            if (!isset($options['template'])) {
-                $this->template = $this->form->layout === 'horizontal' ?
-                    $this->horizontalCheckboxTemplate : $this->checkboxTemplate;
-            } else {
-                $this->template = $options['template'];
-                unset($options['template']);
-            }
-            if (isset($options['label'])) {
-                $this->parts['{labelTitle}'] = $options['label'];
-            }
-            if ($this->form->layout === 'horizontal') {
-                Html::addCssClass($this->wrapperOptions, $this->horizontalCssClasses['offset']);
-            }
-            $this->labelOptions['class'] = null;
-        }
-
         $color = '#1AB394';
         $class = 'is-switchery';
 
@@ -583,6 +566,18 @@ JS;
             $options['class'] .= ' ' . $class;
         }
 
+        $options['label'] = false;
+
+        if(!$enableValue){
+            $enableValue = 1;
+        }
+
+        $options['value'] = $enableValue;
+
+        if($this->form->layout !== 'horizontal'){
+            $this->template = "{label}\n{input}\n{hint}\n{error}";
+        }
+
         $js = <<<JS
         
 var elem = document.querySelector('.$class');
@@ -593,9 +588,14 @@ var switchery = new Switchery(elem, {
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'switchery_' . $class);
-        SwitheryAsset::register(Yii::$app->getView());
+        SwitcheryAsset::register(Yii::$app->getView());
 
-        return parent::checkbox($options, false);
+        $options = array_merge($this->inputOptions, $options);
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
+
+        return $this;
     }
 
     /**

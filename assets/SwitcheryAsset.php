@@ -5,16 +5,16 @@ namespace ijony\admin\assets;
 use yii\web\AssetBundle;
 
 /**
- * Swithery asset bundle.
+ * Switchery asset bundle.
  */
-class SwitheryAsset extends AssetBundle
+class SwitcheryAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/swithery/dist';
+    public $sourcePath = '@bower/switchery/dist';
     public $css = [
-        'swithery.min.css'
+        'switchery.min.css'
     ];
     public $js = [
-        'swithery.min.js'
+        'switchery.min.js'
     ];
     public $depends = [
         'ijony\admin\assets\FastclickAsset',
