@@ -16,4 +16,7 @@ class TagsinputAsset extends AssetBundle
     public $js = [
         'bootstrap-tagsinput.min.js',
     ];
+    public $depends = [
+        'yii\bootstrap\BootstrapPluginAsset',
+    ];
 }

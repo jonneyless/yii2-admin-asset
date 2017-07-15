@@ -17,4 +17,7 @@ class SelectAsset extends AssetBundle
         'js/bootstrap-select.min.js',
         'js/i18n/defaults-zh_CN.js',
     ];
+    public $depends = [
+        'yii\bootstrap\BootstrapPluginAsset',
+    ];
 }

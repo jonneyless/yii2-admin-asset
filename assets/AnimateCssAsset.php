@@ -13,4 +13,7 @@ class AnimateCssAsset extends AssetBundle
     public $css = [
         'animate.min.css'
     ];
+    public $depends = [
+        'yii\bootstrap\BootstrapPluginAsset',
+    ];
 }
