@@ -30,6 +30,7 @@ AppAsset::register($this);
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
 <body>
 <?php $this->beginBody() ?>
 
@@ -81,7 +82,7 @@ AppAsset::register($this);
 
         <div class="wrapper-content animated fadeIn">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-sm-12">
                     <?= $content ?>
                 </div>
             </div>

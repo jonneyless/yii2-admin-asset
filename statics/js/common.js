@@ -75,6 +75,10 @@ $(document).ready(function(){
 
     $("[data-toggle=popover]").popover();
 
+    $('.full-height-scroll').slimscroll({
+        height: '100%'
+    });
+
     toastr.options = {
         "closeButton": true,
         "debug": false,

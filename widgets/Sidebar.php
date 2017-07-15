@@ -131,14 +131,14 @@ class Sidebar extends Widget
     private function renderChilds($items)
     {
         foreach($items as &$item){
-            $name = Html::tag('span', $item['name'], ['class' => 'nav-label']);
+            $name = $item['name'];
             $arrow = '';
             $childs = '';
             $options = [];
 
             if(isset($item['items'])){
                 $arrow = Html::tag('span', '', ['class' => 'fa arrow']);
-                $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav sidebar-subnav']);
+                $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav nav-third-level collapse']);
             }
 
             $link = Html::a($name . $arrow, $item['url']);

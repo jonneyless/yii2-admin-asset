@@ -99,3 +99,21 @@ ul.notes li div small {
 }
 
 /* toastr end */
+
+/* footer begin */
+
+.footer{
+    position: fixed;
+    left: 220px;
+}
+
+.mini-navbar .footer{
+    left: 70px;
+}
+
+.body-small .footer{
+    position: absolute;
+    left: 0px;
+}
+
+/* footer end */
