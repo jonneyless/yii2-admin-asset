@@ -54,34 +54,43 @@ AppAsset::register($this);
             </nav>
         </div>
 
-        <?php if(isset($this->params['breadcrumbs']) || isset($this->params['buttons'])){ ?>
-        <div class="row wrapper border-bottom white-bg page-heading">
-            <div class="col-lg-6">
-                <?php if(isset($this->params['breadcrumbs'])){ ?>
-                <h2><?= $this->title ?></h2>
-                <?= Breadcrumbs::widget([
-                    'tag' => 'ol',
-                    'activeItemTemplate' => "<li class=\"active\"><strong>{link}</strong></li>\n",
-                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                ]) ?>
-                <?php } ?>
-            </div>
-            <div class="col-lg-6">
-                <?php if(isset($this->params['buttons'])){ ?>
-                <div class="buttons">
-                    <?php foreach($this->params['buttons'] as $button){ ?>
-                    <?= Html::a($button['label'], $button['url'], $button['options']) ?>
+        <div class="pin-container">
+            <?php if(isset($this->params['breadcrumbs']) || isset($this->params['buttons'])){ ?>
+            <div class="row wrapper border-bottom white-bg page-heading pinned">
+                <div class="col-lg-6">
+                    <?php if(isset($this->params['breadcrumbs'])){ ?>
+                    <h2><?= $this->title ?></h2>
+                    <?= Breadcrumbs::widget([
+                        'tag' => 'ol',
+                        'activeItemTemplate' => "<li class=\"active\"><strong>{link}</strong></li>\n",
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    ]) ?>
                     <?php } ?>
                 </div>
-                <?php } ?>
+                <div class="col-lg-6">
+                    <?php if(isset($this->params['buttons'])){ ?>
+                    <div class="buttons">
+                        <?php foreach($this->params['buttons'] as $button){ ?>
+                        <?= Html::a($button['label'], $button['url'], $button['options']) ?>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
+                </div>
             </div>
-        </div>
-        <?php } ?>
+            <?php
+                $js = <<<JS
+$(".pinned").pin({containerSelector: ".pin-container"});
+JS;
+                $this->registerJs($js, $this::POS_READY, 'pinned');
 
-        <div class="wrapper-content animated fadeIn">
-            <div class="row">
-                <div class="col-lg-12">
-                    <?= $content ?>
+            ?>
+            <?php } ?>
+
+            <div class="wrapper-content animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <?= $content ?>
+                    </div>
                 </div>
             </div>
         </div>
