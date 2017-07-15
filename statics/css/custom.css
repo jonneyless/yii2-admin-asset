@@ -65,3 +65,17 @@ ul.notes li div small {
 }
 
 /* bootstrap form end */
+
+/* page header begin */
+
+.page-heading .buttons {
+    padding-top: 40px;
+    text-align: right;
+}
+
+.body-small .page-heading .buttons{
+    padding-top: 10px;
+    text-align: left;
+}
+
+/* page header end */
