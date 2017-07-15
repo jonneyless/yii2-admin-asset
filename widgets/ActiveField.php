@@ -543,8 +543,8 @@ JS;
     }
 
     /**
+     * @param       $enableValue
      * @param array $options
-     * @param bool  $enclosedByLabel
      *
      * @return $this
      */
