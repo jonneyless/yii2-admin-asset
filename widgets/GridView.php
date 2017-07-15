@@ -8,6 +8,7 @@
 
 namespace ijony\admin\widgets;
 
+use ijony\admin\assets\FootableAsset;
 use yii\helpers\Html;
 
 class GridView extends \yii\grid\GridView
@@ -15,7 +16,7 @@ class GridView extends \yii\grid\GridView
 
     public $layoutFix = false;
     public $options = ['class' => 'ibox-content'];
-    public $tableOptions = ['class' => 'table table-striped'];
+    public $tableOptions = ['class' => 'table table-footable table-striped'];
     public $layout = "{items}";
 
     public function run()
@@ -36,6 +37,15 @@ class GridView extends \yii\grid\GridView
         }
 
         $view->params['footer']['right'] = $this->renderSummary();
+
+        $js = <<<JS
+        
+$('.table-footable').footable();
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'footable');
+        FootableAsset::register(Yii::$app->getView());
     }
 
     /**

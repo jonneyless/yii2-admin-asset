@@ -60,9 +60,9 @@ class ActiveField extends \yii\bootstrap\ActiveField
     public function dropDownList($items, $options = [])
     {
         if(!isset($options['class'])){
-            $options['class'] = 'selectpicker';
+            $options['class'] = 'form-control selectpicker';
         }else{
-            $options['class'] .= ' selectpicker';
+            $options['class'] .= ' form-control selectpicker';
         }
 
         $options = array_merge($this->inputOptions, $options);
