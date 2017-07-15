@@ -25,7 +25,6 @@ class Alert extends \yii\bootstrap\Widget
 
     public $alertTypes = [
         'error',
-        'danger',
         'success',
         'info',
         'warning'
@@ -40,16 +39,17 @@ class Alert extends \yii\bootstrap\Widget
         $js = [];
 
         foreach ($flashes as $type => $data) {
-            if (in_array($type, $this->alertTypes)) {
-                $data = (array) $data;
-                foreach ($data as $message) {
-                    $js[] = <<<JS
-$.toastr('$type', '$message');
-JS;
-                }
-
-                $session->removeFlash($type);
+            if(!in_array($type, $this->alertTypes)){
+                $type = 'info';
             }
+            $data = (array) $data;
+            foreach ($data as $message) {
+                $js[] = <<<JS
+toastr.$type($message');
+JS;
+            }
+
+            $session->removeFlash($type);
         }
 
         Yii::$app->getView()->registerJs(join("\n", $js), View::POS_READY, 'toastr');
