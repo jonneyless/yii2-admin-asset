@@ -20,11 +20,11 @@ $(document).ready(function(){
     });
 
     function fix_height(){
-        var heightWithoutNavbar = $("body > #wrapper").height() - 61;
-        $(".sidebar-panel").css("min-height", heightWithoutNavbar + "px");
-
         var navbarheight = $('nav.navbar-default').height();
         var wrapperHeight = $('#page-wrapper').height();
+        var heightWithoutNavbar = $("body > #wrapper").height() - 61;
+
+        $(".sidebar-panel").css("min-height", heightWithoutNavbar + "px");
 
         if(navbarheight > wrapperHeight){
             $('#page-wrapper').css("min-height", navbarheight + "px");
