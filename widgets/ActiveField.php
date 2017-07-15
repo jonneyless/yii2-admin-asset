@@ -51,7 +51,25 @@ class ActiveField extends \yii\bootstrap\ActiveField
         parent::__construct($config);
 
         AwesomeBootstrapCheckboxAsset::register(Yii::$app->getView());
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function dropDownList($items, $options = [])
+    {
+        if(!isset($options['class'])){
+            $options['class'] = 'selectpicker';
+        }else{
+            $options['class'] .= ' selectpicker';
+        }
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
+
+        return $this;
     }
 
     /**
