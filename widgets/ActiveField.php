@@ -505,44 +505,6 @@ JS;
     }
 
     /**
-     * @inheritdoc
-     */
-    public function checkboxList($items, $options = [])
-    {
-        $inline = $this->inline;
-        $inputId = Html::getInputId($this->model, $this->attribute);
-
-        if ($this->inline) {
-            if (!isset($options['class'])) {
-                $options['class'] = 'checkbox-group';
-            }
-        }
-
-        if (!isset($options['item'])) {
-            $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
-            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
-                $inputId = $inputId . '-' . $index;
-                $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
-
-                $wapperClass[] = 'checkbox';
-                if(isset($itemOptions['wapperClass'])){
-                    $wapperClass[] = $itemOptions['wapperClass'];
-                    unset($itemOptions['wapperClass']);
-                }
-
-                if($inline){
-                    $wapperClass[] = 'checkbox-inline';
-                }
-
-                return '<div class="' . join(" ", $wapperClass) . '">' . Html::input('checkbox', $name, $value, $options) . Html::label($label, $inputId) . '</div>';
-            };
-        }
-
-        parent::checkboxList($items, $options);
-        return $this;
-    }
-
-    /**
      * @param       $enableValue
      * @param array $options
      *
@@ -595,6 +557,44 @@ JS;
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
 
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function checkboxList($items, $options = [])
+    {
+        $inline = $this->inline;
+        $inputId = Html::getInputId($this->model, $this->attribute);
+
+        if ($this->inline) {
+            if (!isset($options['class'])) {
+                $options['class'] = 'checkbox-group';
+            }
+        }
+
+        if (!isset($options['item'])) {
+            $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
+            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
+                $inputId = $inputId . '-' . $index;
+                $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
+
+                $wapperClass[] = 'checkbox';
+                if(isset($itemOptions['wapperClass'])){
+                    $wapperClass[] = $itemOptions['wapperClass'];
+                    unset($itemOptions['wapperClass']);
+                }
+
+                if($inline){
+                    $wapperClass[] = 'checkbox-inline';
+                }
+
+                return '<div class="' . join(" ", $wapperClass) . '">' . Html::input('checkbox', $name, $value, $options) . Html::label($label, $inputId) . '</div>';
+            };
+        }
+
+        parent::checkboxList($items, $options);
         return $this;
     }
 
