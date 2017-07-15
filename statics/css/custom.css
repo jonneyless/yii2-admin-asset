@@ -58,6 +58,10 @@ ul.notes li div small {
     font-size: 12px;
 }
 
+.wrapper-content {
+    padding: 20px 5px 40px;
+}
+
 /* bootstrap form begin */
 
 .checkbox-group {
