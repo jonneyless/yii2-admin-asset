@@ -45,7 +45,7 @@ class Alert extends \yii\bootstrap\Widget
             $data = (array) $data;
             foreach ($data as $message) {
                 $js[] = <<<JS
-toastr.$type($message');
+toastr.$type('$message');
 JS;
             }
 

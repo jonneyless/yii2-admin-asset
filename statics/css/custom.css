@@ -83,3 +83,19 @@ ul.notes li div small {
 }
 
 /* page header end */
+
+/* toastr begin */
+
+#toast-container > div {
+    -moz-box-shadow: 0 0 6px #999999;
+    -webkit-box-shadow: 0 0 6px #999999;
+    box-shadow: 0 0 6px #999999;
+}
+
+#toast-container > div:hover {
+    -moz-box-shadow: 0 0 6px #999999;
+    -webkit-box-shadow: 0 0 6px #999999;
+    box-shadow: 0 0 6px #999999;
+}
+
+/* toastr end */
