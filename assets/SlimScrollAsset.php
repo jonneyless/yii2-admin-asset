@@ -11,6 +11,6 @@ class SlimScrollAsset extends AssetBundle
 {
     public $sourcePath = '@bower/slim-scroll';
     public $js = [
-        'slimscroll.min.js'
+        'jquery.slimscroll.min.js'
     ];
 }
