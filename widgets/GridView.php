@@ -9,7 +9,9 @@
 namespace ijony\admin\widgets;
 
 use ijony\admin\assets\FootableAsset;
+use Yii;
 use yii\helpers\Html;
+use yii\web\View;
 
 class GridView extends \yii\grid\GridView
 {
