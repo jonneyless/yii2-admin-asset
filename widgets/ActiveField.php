@@ -5,6 +5,7 @@ namespace ijony\admin\widgets;
 use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
+use ijony\admin\assets\SelectAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
 use ijony\admin\assets\TagsinputFixAsset;
 use Yii;
@@ -68,6 +69,8 @@ class ActiveField extends \yii\bootstrap\ActiveField
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
+
+        SelectAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -444,7 +447,18 @@ JS;
      */
     public function editor($options = [])
     {
-        $inputId = Html::getInputId($this->model, $this->attribute);
+        if(!isset($options['class'])){
+            $options['class'] = 'is-editor';
+        }else{
+            $options['class'] .= ' is-editor';
+        }
+
+        $height = 400;
+
+        if(isset($options['height'])){
+            $height = $options['height'];
+            unset($options['height']);
+        }
 
         $options = array_merge($this->inputOptions, $options);
         $this->addAriaAttributes($options);
@@ -453,14 +467,14 @@ JS;
 
         $js = <<<JS
         
-$('#$inputId').summernote({
+$('.is-editor').summernote({
     lang: 'zh-CN',
-    height: 400
+    height: $height
 });
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote_' . $inputId);
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote');
         SummerNoteFixAsset::register(Yii::$app->getView());
 
         return $this;
