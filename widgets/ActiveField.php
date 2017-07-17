@@ -1,6 +1,6 @@
 <?php
 
-namespace ijony\admin\grid;
+namespace ijony\admin\widgets;
 
 use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
@@ -503,6 +503,7 @@ JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
         TagsinputAsset::register(Yii::$app->getView());
+        TagsinputFixAsset::register(Yii::$app->getView());
 
         return $this;
     }
