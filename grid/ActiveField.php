@@ -1,13 +1,15 @@
 <?php
 
-namespace ijony\admin\widgets;
+namespace ijony\admin\grid;
 
 use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SelectAsset;
+use ijony\admin\assets\SummerNoteAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
 use ijony\admin\assets\SwitcheryAsset;
+use ijony\admin\assets\TagsinputAsset;
 use ijony\admin\assets\TagsinputFixAsset;
 use Yii;
 use yii\bootstrap\Html;
@@ -476,6 +478,7 @@ $('.is-editor').summernote({
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote');
+        SummerNoteAsset::register(Yii::$app->getView());
         SummerNoteFixAsset::register(Yii::$app->getView());
 
         return $this;
@@ -499,7 +502,7 @@ $('#$inputId').tagsinput({
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
-        TagsinputFixAsset::register(Yii::$app->getView());
+        TagsinputAsset::register(Yii::$app->getView());
 
         return $this;
     }

@@ -1,11 +1,13 @@
 <?php
-namespace ijony\admin\widgets;
+
+namespace ijony\admin\grid;
 
 use Yii;
 use yii\helpers\Html;
 
 class ActionColumn extends \yii\grid\ActionColumn
 {
+
     public $header = '操作';
     public $headerOptions = ['class' => 'text-right'];
     public $contentOptions = ['class' => 'text-right'];

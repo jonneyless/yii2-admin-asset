@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Jony
- * Date: 2017/3/15
- * Time: 16:03
- */
 
-namespace ijony\admin\widgets;
+namespace ijony\admin\grid;
 
 use ijony\admin\assets\FootableAsset;
 use Yii;
