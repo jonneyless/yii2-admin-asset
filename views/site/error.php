@@ -13,6 +13,7 @@ if(is_array($url)){
 }
 
 ?>
+<?php $this->beginContent('@app/views/layouts/main-full.php');?>
     <div class="middle-box" style="padding-top: 100px;">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -60,3 +61,4 @@ if(is_array($url)){
             t = setTimeout("toGo()", 1000);
         }
     </script>
+<?php $this->endContent();?>

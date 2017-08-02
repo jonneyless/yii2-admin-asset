@@ -13,6 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="middle-box loginscreen">
     <div>
+        <div>
+            <h1 class="logo-name">登录</h1>
+        </div>
         <?php $form = ActiveForm::begin([
             'id' => 'login-form',
             'options' => ['class' => 'm-t'],

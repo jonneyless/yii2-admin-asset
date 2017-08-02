@@ -60,7 +60,7 @@ class Controller extends \yii\web\Controller
      */
     public function message($message, $url = 'javascript:history.go(-1)', $delay = 3)
     {
-        return $this->render('/site/error', [
+        return $this->renderPartial('/site/error', [
             'message' => $message,
             'url' => $url,
             'delay' => $delay,

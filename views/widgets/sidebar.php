@@ -24,9 +24,7 @@ use yii\helpers\Url;
                         <li><a href="<?= Url::to(['site/logout']) ?>">注销</a></li>
                     </ul>
                 </div>
-                <div class="logo-element">
-                    IN+
-                </div>
+                <div class="logo-element">DA</div>
             </li>
 
             <?= $sidebarNav ?>

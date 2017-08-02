@@ -9,6 +9,19 @@
     font-size: 12px;
 }
 
+.nav-header {
+    padding: 30px 25px;
+}
+
+.middle-box h1 {
+    font-size: 155px;
+}
+
+.logo-element {
+    height: 60px;
+    overflow: hidden;
+}
+
 .animation-text-info {
     font-size: 12px;
 }
