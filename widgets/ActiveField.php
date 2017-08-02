@@ -58,6 +58,84 @@ class ActiveField extends \yii\bootstrap\ActiveField
     }
 
     /**
+     * 带单位文本框
+     *
+     * @param       $unit
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function textUnitInput($unit, $options = [])
+    {
+        if(!$unit){
+            return $this->textInput($options);
+        }
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::tag(
+            'div',
+            Html::activeTextInput($this->model, $this->attribute, $options) .
+            Html::tag(
+                'div',
+                $unit,
+                [
+                    'class' => 'input-group-addon'
+                ]
+            ),
+            [
+                'class' => 'input-group'
+            ]
+        );
+
+        return $this;
+    }
+
+    /**
+     * 带按钮文本框
+     *
+     * @param       $buttonText
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function textButtonInput($buttonText, $options = [])
+    {
+        if(!$buttonText){
+            return $this->textInput($options);
+        }
+
+        $buttonOptions = ['class' => 'btn btn-default'];
+
+        if(isset($options['buttonOptions'])){
+            $buttonOptions = array_merge($buttonOptions, $options['buttonOptions']);
+            unset($options['buttonOptions']);
+        }
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::tag(
+            'div',
+            Html::activeTextInput($this->model, $this->attribute, $options) .
+            Html::tag(
+                'div',
+                Html::button(
+                    $buttonText,
+                    $buttonOptions
+                ),
+                [
+                    'class' => 'input-group-btn'
+                ]
+            ),
+            [
+                'class' => 'input-group'
+            ]
+        );
+
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
     public function dropDownList($items, $options = [])

@@ -36,7 +36,10 @@ AppAsset::register($this);
 
 <div id="wrapper">
     <?= Sidebar::widget([
-        'items' => $this->context->getMenus()
+        'items' => $this->context->getMenus(),
+        'username' => $this->context->getUserName(),
+        'rolename' => $this->context->getRoleName(),
+        'avatar' => $this->context->getAvatar(),
     ]); ?>
 
     <div id="page-wrapper" class="gray-bg">
@@ -46,7 +49,7 @@ AppAsset::register($this);
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i> </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="no-small">欢迎使用后台系统。</li>
+                    <li class="no-small"><?= $this->context->getWelcome() ?></li>
                     <li>
                         <a href="<?= Url::to(['site/logout']) ?>">
                             <i class="fa fa-sign-out" aria-hidden="true"></i> 注销

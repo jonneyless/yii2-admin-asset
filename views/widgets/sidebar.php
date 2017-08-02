@@ -18,7 +18,7 @@ use yii\helpers\Url;
                             <span class="text-muted text-xs block"><?= $rolename ?> <b class="caret"></b></span>
                         </span>
                     </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                    <ul class="dropdown-menu animated fadeIn m-t-xs">
                         <li><a href="<?= Url::to(['admin/reset']) ?>">修改密码</a></li>
                         <li class="divider"></li>
                         <li><a href="<?= Url::to(['site/logout']) ?>">注销</a></li>

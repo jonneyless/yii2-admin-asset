@@ -29,6 +29,26 @@ class Controller extends \yii\web\Controller
 
     }
 
+    public function getUserName()
+    {
+        return 'admin';
+    }
+
+    public function getRoleName()
+    {
+        return '管理员';
+    }
+
+    public function getAvatar()
+    {
+
+    }
+
+    public function getWelcome()
+    {
+        return '欢迎使用后台系统。';
+    }
+
     /**
      * 提示跳转页
      *
