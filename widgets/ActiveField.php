@@ -663,6 +663,10 @@ JS;
                 $inputId = $inputId . '-' . $index;
                 $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
 
+                if($checked){
+                    $options['checked'] = $checked;
+                }
+
                 $wapperClass[] = 'checkbox';
                 if(isset($itemOptions['wapperClass'])){
                     $wapperClass[] = $itemOptions['wapperClass'];
@@ -700,6 +704,10 @@ JS;
             $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
                 $inputId = $inputId . '-' . $index;
                 $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
+
+                if($checked){
+                    $options['checked'] = $checked;
+                }
 
                 $wapperClass[] = 'radio';
                 if(isset($itemOptions['wapperClass'])){
