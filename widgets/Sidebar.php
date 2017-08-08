@@ -111,7 +111,7 @@ class Sidebar extends Widget
             $childs = '';
             $options = [];
 
-            if(isset($item['items'])){
+            if(isset($item['items']) && $item['items']){
                 $arrow = Html::tag('span', '', ['class' => 'fa arrow']);
                 $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav nav-second-level collapse']);
             }
@@ -136,7 +136,7 @@ class Sidebar extends Widget
             $childs = '';
             $options = [];
 
-            if(isset($item['items'])){
+            if(isset($item['items']) && $item['items']){
                 $arrow = Html::tag('span', '', ['class' => 'fa arrow']);
                 $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav nav-third-level collapse']);
             }

@@ -85,6 +85,10 @@ ul.notes li div small {
 
 /* page header begin */
 
+.page-heading h2{
+    line-height: 1;
+}
+
 .page-heading .buttons {
     padding-top: 40px;
     text-align: right;
@@ -118,6 +122,7 @@ ul.notes li div small {
 .footer{
     position: fixed;
     left: 220px;
+    line-height: 1;
 }
 
 .mini-navbar .footer{
@@ -129,4 +134,132 @@ ul.notes li div small {
     left: 0px;
 }
 
+.footer .summary,
+.footer .copyright{
+    line-height: 30px;
+}
+
+.footer .pagination{
+    margin: 0;
+}
+
 /* footer end */
+
+/* image upload begin */
+
+.image-upload{
+    width: 150px;
+    border: 1px solid #e5e6e7;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-upload img{
+    width: 100%;
+    max-width: 150px;
+    max-height: 300px;
+}
+
+.image-upload input{
+    width: 200px;
+    height: 400px;
+    border: none;
+    background: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* image upload end */
+
+/* Table Beauty begin */
+
+.table-beauty > tbody > tr > th,
+.table-beauty > tbody > tr > td{
+    vertical-align: top;
+}
+
+.table-beauty > tbody > tr > th.media-middle,
+.table-beauty > tbody > tr > td.media-middle{
+    vertical-align: middle;
+}
+
+.table-beauty > tbody > tr > th > label{
+    display: inline-block;
+    padding: 12px 12px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.table-beauty > tbody > tr > td > label{
+    display: inline-block;
+    font-weight: normal;
+    padding: 12px 24px;
+    width: 160px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.table-beauty > tbody > tr > th > label > input,
+.table-beauty > tbody > tr > td > label > input{
+    vertical-align: middle;
+    margin: -2px 0 0;
+}
+
+
+/* Table Beauty end */
+
+/* input begin */
+
+.inline {
+    display: inline-block !important;
+}
+
+.input-s-sm {
+    width: 120px;
+}
+
+.input-s {
+    width: 200px;
+}
+
+.input-s-lg {
+    width: 250px;
+}
+
+.i-checks {
+    padding-left: 0;
+}
+
+.form-control-inline{
+    display: block;
+    width: 100%;
+    margin-right: 0;
+}
+
+@media (min-width: 768px){
+    .input-group-inline{
+        display: inline-table;
+        width: 1px;
+        vertical-align: middle;
+    }
+
+    .form-control-inline,
+    .input-group .form-control-inline{
+        display: inline-block;
+        width: auto;
+        margin-right: 5px;
+    }
+
+    .form-control-datetime,
+    .input-group .form-control-datetime{
+        display: inline-block;
+        width: 180px;
+    }
+
+    .input-group-inline .form-control-inline{
+        margin-right: 0px;
+    }
+}

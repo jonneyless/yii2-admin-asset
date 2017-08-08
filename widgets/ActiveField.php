@@ -11,6 +11,7 @@ use ijony\admin\assets\SummerNoteFixAsset;
 use ijony\admin\assets\SwitcheryAsset;
 use ijony\admin\assets\TagsinputAsset;
 use ijony\admin\assets\TagsinputFixAsset;
+use ijony\helpers\Image;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
@@ -196,7 +197,7 @@ HTML;
         $inputName = Html::getInputName($this->model, $this->attribute);
         $inputValue = Html::getAttributeValue($this->model, $this->attribute);
 
-        $preview = Utils::getImg($inputValue, 300);
+        $preview = Image::getImg($inputValue, 300);
 
         $data = Html::img($preview, ['data-default' => $preview]);
 
@@ -422,7 +423,7 @@ JS;
         $template = '<div class="input-daterange input-group">%s<span class="input-group-addon">到</span>%s</div>';
 
         if(!isset($options['class'])){
-            $options['class'] = 'form-control form-control-inline';
+            $options['class'] = 'form-control';
         }
 
         $options['id'] = $beginInputId;

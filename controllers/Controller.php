@@ -3,6 +3,7 @@
 namespace ijony\admin\controllers;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * 控制器基类
@@ -13,12 +14,22 @@ use Yii;
 class Controller extends \yii\web\Controller
 {
 
+    public $topButtons;
+
     /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
+
+        if(YII_ENV_DEV){
+            $this->topButtons[] = [
+                'name' => '脚手架',
+                'url' => Url::to(['/gii']),
+                'icon' => 'cogs',
+            ];
+        }
 
         $this->view->params['footer']['left'] = '<div class="copyright"><strong>Copyright</strong> ijony.com © 2017</div>';
         $this->view->params['footer']['right'] = '';

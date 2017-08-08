@@ -50,6 +50,15 @@ AppAsset::register($this);
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="no-small"><?= $this->context->getWelcome() ?></li>
+                    <?php if(isset($this->context->topButtons) && $this->context->topButtons){ ?>
+                        <?php foreach($this->context->topButtons as $button){ ?>
+                        <li class="no-small">
+                            <a href="<?= $button['url'] ?>">
+                                <i class="fa fa-<?= $button['icon'] ?>" aria-hidden="true"></i> <?= $button['name'] ?>
+                            </a>
+                        </li>
+                        <?php } ?>
+                    <?php } ?>
                     <li>
                         <a href="<?= Url::to(['site/logout']) ?>">
                             <i class="fa fa-sign-out" aria-hidden="true"></i> 注销
