@@ -93,11 +93,7 @@ AppAsset::register($this);
         <?php } ?>
 
         <div class="wrapper-content animated fadeIn">
-            <div class="row">
-                <div class="col-sm-12">
-                    <?= $content ?>
-                </div>
-            </div>
+            <?= $content ?>
         </div>
 
         <div class="footer">
