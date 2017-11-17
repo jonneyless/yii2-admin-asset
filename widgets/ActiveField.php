@@ -6,6 +6,7 @@ use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SelectAsset;
+use ijony\admin\assets\SelectFixAsset;
 use ijony\admin\assets\SummerNoteAsset;
 use ijony\admin\assets\SummerNoteFixAsset;
 use ijony\admin\assets\SwitcheryAsset;
@@ -281,7 +282,7 @@ JS;
             $datas = $model::getSelectDatas($parentId, $exclude);
             if($datas){
                 $selects[] = Html::dropDownList($inputName, $id, $datas, [
-                    'class' => 'form-control form-control-inline',
+                    'class' => 'form-control form-control-inline selectpicker',
                     'ajax-select' => Url::to(['ajax/select', 'model' => $model, 'input' => $inputName, 'exclude' => $exclude]),
                 ]);
             }
@@ -289,7 +290,7 @@ JS;
 
         if(!$selects){
             $selects[] = Html::dropDownList($inputName, '', [], [
-                'class' => 'form-control form-control-inline',
+                'class' => 'form-control form-control-inline selectpicker',
                 'prompt' => '请选择',
             ]);
         }
@@ -300,11 +301,11 @@ JS;
         
 $(document).off('change', 'select[ajax-select]');
 $(document).on('change', 'select[ajax-select]', function(){
-    var select = $(this);
+    var select = $(this).closest('.bootstrap-select');
     var url = $(this).attr('ajax-select');
     var parent_id = $(this).val();
     
-    select.nextAll('select').remove();
+    select.nextAll('.bootstrap-select').remove();
     
     if(parent_id == $(this).children('option').eq(0).val()){
         return false;
@@ -313,6 +314,7 @@ $(document).on('change', 'select[ajax-select]', function(){
     $.post(url, {parent_id: parent_id}, function(datas){
         if(datas.html){
             select.after(datas.html);
+            $('.selectpicker').selectpicker();
         }
     }, 'json');
 });
@@ -320,6 +322,8 @@ $(document).on('change', 'select[ajax-select]', function(){
 JS;
 
         Yii::$app->view->registerJs($js, View::POS_READY, 'ajax-select');
+        SelectAsset::register(Yii::$app->getView());
+        SelectFixAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -615,6 +619,11 @@ JS;
 
         if(!$enableValue){
             $enableValue = 1;
+        }
+
+        if(is_array($enableValue)){
+            $options['uncheck'] = $enableValue[0];
+            $enableValue = $enableValue[1];
         }
 
         $options['value'] = $enableValue;
