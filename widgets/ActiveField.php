@@ -259,6 +259,8 @@ JS;
     {
         $inputName = Html::getInputName($this->model, $this->attribute);
         $valueId = Html::getAttributeValue($this->model, $this->attribute);
+        $primaryKey = $this->model::primaryKey();
+        $primaryKey = current($primaryKey);
 
         if(isset($options['class'])){
             $model = $options['class'];
@@ -268,7 +270,7 @@ JS;
             $model = $this->model;
             $model = $model::className();
             $ids = $this->model->getParentIds();
-            $exclude = $this->model->id ? $this->model->id : 0;
+            $exclude = $this->model->$primaryKey ? $this->model->$primaryKey : 0;
         }
 
         $selects = [];
