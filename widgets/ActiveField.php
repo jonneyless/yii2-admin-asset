@@ -270,7 +270,7 @@ JS;
             $exclude = 0;
         }else{
             $ids = $this->model->getParentIds();
-            $exclude = $this->model->$primaryKey ? $this->model->$primaryKey : 0;
+            $exclude = $this->model->id ? $this->model->id : 0;
         }
 
         $selects = [];
