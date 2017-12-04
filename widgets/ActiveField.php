@@ -266,11 +266,15 @@ JS;
 
         if(isset($options['class'])){
             $model = $options['class'];
-            $ids = $model::getParentIds($valueId);
+            $modelData = $model::findOne($valueId);
+            $ids = [0];
+            if($modelData){
+                $ids = $modelData->getParentIds();
+            }
             $exclude = 0;
         }else{
             $ids = $this->model->getParentIds();
-            $exclude = $this->model->id ? $this->model->id : 0;
+            $exclude = $this->model->$primaryKey ? $this->model->$primaryKey : 0;
         }
 
         $selects = [];
