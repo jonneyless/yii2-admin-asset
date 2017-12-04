@@ -465,7 +465,7 @@ JS;
      *
      * @return $this
      */
-    public function date()
+    public function date($options = [])
     {
         $dateTemplate = "Y-m-d";
         $layTemplate = "YYYY-MM-DD";
