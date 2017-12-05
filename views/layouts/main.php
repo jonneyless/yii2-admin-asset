@@ -96,7 +96,7 @@ AppAsset::register($this);
             <?= $content ?>
         </div>
 
-        <div class="footer">
+        <div class="footer <?= $this->params['footer']['class'] ?>">
             <div class="pull-right no-small">
                 <?= $this->params['footer']['right'] ?>
             </div>

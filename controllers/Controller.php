@@ -9,6 +9,7 @@ use yii\helpers\Url;
  * 控制器基类
  *
  * @property $plugins
+ * @property $topButtons;
  * @inheritdoc
  */
 class Controller extends \yii\web\Controller
@@ -32,6 +33,7 @@ class Controller extends \yii\web\Controller
         }
 
         $this->view->params['footer']['left'] = '<div class="copyright"><strong>Copyright</strong> ijony.com © 2017</div>';
+        $this->view->params['footer']['class'] = '';
         $this->view->params['footer']['right'] = '';
     }
 

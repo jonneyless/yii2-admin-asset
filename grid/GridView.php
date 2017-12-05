@@ -30,6 +30,7 @@ class GridView extends \yii\grid\GridView
 
         if($pager = $this->renderPager()){
             $view->params['footer']['left'] = $pager;
+            $view->params['footer']['class'] = 'footer-fixed';
         }
 
         $view->params['footer']['right'] = $this->renderSummary();
