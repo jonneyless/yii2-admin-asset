@@ -3880,9 +3880,11 @@ code {
 }
 .ibox {
   clear: both;
-  margin-bottom: 25px;
   margin-top: 0;
   padding: 0;
+}
+.ibox-grid{
+  margin-bottom: 25px;
 }
 .ibox.collapsed .ibox-content {
   display: none;

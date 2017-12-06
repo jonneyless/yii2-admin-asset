@@ -72,7 +72,7 @@ ul.notes li div small {
 }
 
 .wrapper-content {
-    padding: 20px 5px 40px;
+    padding: 20px 5px 71px;
 }
 
 /* bootstrap form begin */
@@ -120,18 +120,18 @@ ul.notes li div small {
 /* footer begin */
 
 .footer{
+    position: absolute;
+    left: 0px;
+    line-height: 1;
+}
+
+.footer.footer-fixed{
     position: fixed;
     left: 220px;
-    line-height: 1;
 }
 
 .mini-navbar .footer{
     left: 70px;
-}
-
-.body-small .footer{
-    position: absolute;
-    left: 0px;
 }
 
 .footer .summary,
