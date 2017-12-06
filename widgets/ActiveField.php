@@ -305,6 +305,8 @@ JS;
 
         $js = <<<JS
         
+$('.selectpicker').selectpicker({container: 'body'});
+
 $(document).off('change', 'select[ajax-select]');
 $(document).on('change', 'select[ajax-select]', function(){
     var select = $(this).closest('.bootstrap-select');
@@ -320,7 +322,7 @@ $(document).on('change', 'select[ajax-select]', function(){
     $.post(url, {parent_id: parent_id}, function(datas){
         if(datas.html){
             select.after(datas.html);
-            $('.selectpicker').selectpicker();
+            $('.selectpicker').selectpicker({container: 'body'});
         }
     }, 'json');
 });
