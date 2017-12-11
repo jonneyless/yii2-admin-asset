@@ -2,9 +2,6 @@
 
 namespace ijony\admin\assets;
 
-use Yii;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 use yii\web\AssetBundle;
 
 /**
@@ -12,12 +9,13 @@ use yii\web\AssetBundle;
  */
 class TagsinputAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/bootstrap-tagsinput/dist/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'bootstrap-tagsinput.css'
+        'css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css',
+        'css/fix/tagsinput.css',
     ];
     public $js = [
-        'bootstrap-tagsinput.min.js',
+        'js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js',
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',

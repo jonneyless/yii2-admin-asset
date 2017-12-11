@@ -9,9 +9,9 @@ use yii\web\AssetBundle;
  */
 class AwesomeBootstrapCheckboxAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/awesome-bootstrap-checkbox/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'awesome-bootstrap-checkbox.css',
+        'css/plugins/awesome-bootstrap-checkbox.css',
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',

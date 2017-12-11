@@ -9,11 +9,11 @@ use yii\web\AssetBundle;
  */
 class FootableAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/footable/compiled/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'footable.bootstrap.min.css',
+        'css/plugins/footable/footable.bootstrap.min.css',
     ];
     public $js = [
-        'footable.min.js',
+        'js/plugins/footable/footable.min.js',
     ];
 }

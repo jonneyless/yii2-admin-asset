@@ -9,8 +9,8 @@ use yii\web\AssetBundle;
  */
 class PaceAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/pace/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $js = [
-        'pace.min.js'
+        'js/pace.min.js'
     ];
 }

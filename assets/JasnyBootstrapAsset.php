@@ -9,12 +9,12 @@ use yii\web\AssetBundle;
  */
 class JasnyBootstrapAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/jasny-bootstrap/dist/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'css/jasny-bootstrap.min.css'
+        'css/plugins/jasny-bootstrap/jasny-bootstrap.min.css'
     ];
     public $js = [
-        'js/jasny-bootstrap.min.js'
+        'js/plugins/jasny-bootstrap/jasny-bootstrap.min.js'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',

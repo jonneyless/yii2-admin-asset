@@ -9,12 +9,13 @@ use yii\web\AssetBundle;
  */
 class SummerNoteAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/summernote/dist/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'summernote.css',
+        'css/plugins/summernote/summernote.css',
+        'css/fix/summernote.css',
     ];
     public $js = [
-        'summernote.js',
-        'lang/summernote-zh-CN.js',
+        'js/plugins/summernote/summernote.min.js',
+        'js/plugins/summernote/summernote.zh-CN.min.js',
     ];
 }

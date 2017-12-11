@@ -9,13 +9,13 @@ use yii\web\AssetBundle;
  */
 class DatepickerAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/bootstrap-datepicker/dist/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'css/bootstrap-datepicker3.min.css',
+        'css/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css',
     ];
     public $js = [
-        'js/bootstrap-datepicker.min.js',
-        'locales/bootstrap-datepicker.zh-CN.min.js',
+        'js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js',
+        'js/plugins/bootstrap-datepicker/bootstrap-datepicker.zh-CN.min.js',
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',

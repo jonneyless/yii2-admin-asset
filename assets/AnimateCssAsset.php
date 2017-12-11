@@ -9,9 +9,9 @@ use yii\web\AssetBundle;
  */
 class AnimateCssAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/animate-css/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'animate.min.css'
+        'css/plugins/animate.min.css',
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',

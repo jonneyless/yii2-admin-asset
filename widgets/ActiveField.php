@@ -6,12 +6,9 @@ use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SelectAsset;
-use ijony\admin\assets\SelectFixAsset;
 use ijony\admin\assets\SummerNoteAsset;
-use ijony\admin\assets\SummerNoteFixAsset;
 use ijony\admin\assets\SwitcheryAsset;
 use ijony\admin\assets\TagsinputAsset;
-use ijony\admin\assets\TagsinputFixAsset;
 use ijony\helpers\Image;
 use Yii;
 use yii\bootstrap\Html;
@@ -331,7 +328,6 @@ JS;
 
         Yii::$app->view->registerJs($js, View::POS_READY, 'ajax-select');
         SelectAsset::register(Yii::$app->getView());
-        SelectFixAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -570,7 +566,6 @@ JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote');
         SummerNoteAsset::register(Yii::$app->getView());
-        SummerNoteFixAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -594,7 +589,6 @@ JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
         TagsinputAsset::register(Yii::$app->getView());
-        TagsinputFixAsset::register(Yii::$app->getView());
 
         return $this;
     }

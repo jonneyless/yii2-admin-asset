@@ -9,8 +9,8 @@ use yii\web\AssetBundle;
  */
 class MetisMenuAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/onokumus/metismenu/dist/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $js = [
-        'metisMenu.min.js'
+        'js/plugins/jquery.metisMenu.min.js'
     ];
 }

@@ -9,13 +9,14 @@ use yii\web\AssetBundle;
  */
 class SelectAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/bootstrap-select/dist/';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $css = [
-        'css/bootstrap-select.min.css',
+        'css/plugins/bootstrap-select/bootstrap-select.min.css',
+        'css/fix/select.css',
     ];
     public $js = [
-        'js/bootstrap-select.min.js',
-        'js/i18n/defaults-zh_CN.js',
+        'js/plugins/bootstrap-select/bootstrap-select.min.js',
+        'js/plugins/bootstrap-select/bootstrap-select.zh_CN.min.js',
     ];
     public $depends = [
         'yii\bootstrap\BootstrapPluginAsset',

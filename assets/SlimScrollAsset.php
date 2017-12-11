@@ -9,8 +9,8 @@ use yii\web\AssetBundle;
  */
 class SlimScrollAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/slimscroll';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $js = [
-        'jquery.slimscroll.min.js'
+        'js/jquery.slimscroll.min.js'
     ];
 }
