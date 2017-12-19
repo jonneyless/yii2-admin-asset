@@ -282,7 +282,7 @@ JS;
                 $id = $ids[$index + 1];
             }
 
-            $datas = $model::getSelectDatas($parentId, $exclude);
+            $datas = $model::getSelectData($parentId, $exclude);
             if($datas){
                 $selects[] = Html::dropDownList($inputName, $id, $datas, [
                     'class' => 'form-control form-control-inline selectpicker',
