@@ -280,6 +280,8 @@ JS;
             $id = 0;
             if(isset($ids[$index + 1])){
                 $id = $ids[$index + 1];
+            }else{
+                $id = $valueId;
             }
 
             $datas = $model::getSelectData($parentId, $exclude);
