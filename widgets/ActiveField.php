@@ -258,8 +258,6 @@ JS;
         $model = $model::className();
         $inputName = Html::getInputName($this->model, $this->attribute);
         $valueId = Html::getAttributeValue($this->model, $this->attribute);
-        $primaryKey = $model::primaryKey();
-        $primaryKey = current($primaryKey);
 
         if(isset($options['class'])){
             $model = $options['class'];
@@ -270,6 +268,8 @@ JS;
             }
             $exclude = 0;
         }else{
+            $primaryKey = $model::primaryKey();
+            $primaryKey = current($primaryKey);
             $ids = $this->model->getParentIds();
             $exclude = $this->model->$primaryKey ? $this->model->$primaryKey : 0;
         }
