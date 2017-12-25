@@ -11,6 +11,6 @@ class SlimScrollAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
     public $js = [
-        'js/jquery.slimscroll.min.js'
+        'js/plugins/jquery.slimscroll.min.js'
     ];
 }
