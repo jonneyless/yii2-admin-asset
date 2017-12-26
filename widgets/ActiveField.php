@@ -436,6 +436,8 @@ JS;
     /**
      * 日期选择
      *
+     * @param array $options
+     *
      * @return $this
      */
     public function date($options = [])
@@ -541,6 +543,13 @@ JS;
         return $this;
     }
 
+    /**
+     * 标签输入框
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
     public function tags($options = [])
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
@@ -560,69 +569,6 @@ JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
         TagsinputAsset::register(Yii::$app->getView());
-
-        return $this;
-    }
-
-    /**
-     * @param       $enableValue
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function switchery($enableValue, $options = [])
-    {
-        $color = '#1AB394';
-        $class = 'is-switchery';
-
-        if(isset($options['color'])){
-            $color = $options['color'];
-            unset($options['color']);
-
-            $class = Html::getInputId($this->model, $this->attribute);
-        }
-
-        if(!isset($options['class'])){
-            $options['class'] = $class;
-        }else{
-            $options['class'] .= ' ' . $class;
-        }
-
-        $options['label'] = false;
-
-        if(!$enableValue){
-            $enableValue = 1;
-        }
-
-        if(is_array($enableValue)){
-            $options['uncheck'] = $enableValue[0];
-            $enableValue = $enableValue[1];
-        }
-
-        $options['value'] = $enableValue;
-
-        if($this->form->layout !== 'horizontal'){
-            $this->template = "{label}\n{input}\n{hint}\n{error}";
-        }
-
-        $js = <<<JS
-        
-var elems = Array.prototype.slice.call(document.querySelectorAll('.$class'));
-elems.forEach(function(html) {
-    var switchery = new Switchery(html, {
-        color: '$color'
-    });
-});
-
-JS;
-
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'switchery_' . $class);
-        SwitcheryAsset::register(Yii::$app->getView());
-
-        $options = array_merge($this->inputOptions, $options);
-        $this->addAriaAttributes($options);
-        $this->adjustLabelFor($options);
-        $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
 
         return $this;
     }
