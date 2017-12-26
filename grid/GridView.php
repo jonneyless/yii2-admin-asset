@@ -36,7 +36,7 @@ class GridView extends \yii\grid\GridView
 
         $view->params['footer']['right'] = $this->renderSummary();
 
-        if($footable){
+        if($this->footable){
             $js = <<<JS
 
 $('.table-footable').footable();
