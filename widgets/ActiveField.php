@@ -638,9 +638,11 @@ JS;
 
         $js = <<<JS
         
-var elem = document.querySelector('.$class');
-var switchery = new Switchery(elem, {
-    color: '$color'
+var elems = Array.prototype.slice.call(document.querySelectorAll('.$class'));
+elems.forEach(function(html) {
+    var switchery = new Switchery(html, {
+        color: '$color'
+    });
 });
 
 JS;
