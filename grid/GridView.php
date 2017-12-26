@@ -11,6 +11,7 @@ class GridView extends \yii\grid\GridView
 {
 
     public $layoutFix = false;
+    public $footable = false;
     public $options = ['class' => 'ibox-content'];
     public $tableOptions = ['class' => 'table table-footable table-striped'];
     public $layout = "{items}";
@@ -35,14 +36,16 @@ class GridView extends \yii\grid\GridView
 
         $view->params['footer']['right'] = $this->renderSummary();
 
-//        $js = <<<JS
-//
-//$('.table-footable').footable();
-//
-//JS;
-//
-//        Yii::$app->getView()->registerJs($js, View::POS_READY, 'footable');
-//        FootableAsset::register(Yii::$app->getView());
+        if($footable){
+            $js = <<<JS
+
+$('.table-footable').footable();
+
+JS;
+
+            Yii::$app->getView()->registerJs($js, View::POS_READY, 'footable');
+            FootableAsset::register(Yii::$app->getView());
+        }
     }
 
     /**
