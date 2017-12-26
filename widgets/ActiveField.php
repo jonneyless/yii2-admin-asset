@@ -150,8 +150,6 @@ class ActiveField extends \yii\bootstrap\ActiveField
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
 
-        SelectAsset::register(Yii::$app->getView());
-
         return $this;
     }
 
