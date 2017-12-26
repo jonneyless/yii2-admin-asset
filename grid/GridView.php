@@ -35,14 +35,14 @@ class GridView extends \yii\grid\GridView
 
         $view->params['footer']['right'] = $this->renderSummary();
 
-        $js = <<<JS
-        
-$('.table-footable').footable();
-
-JS;
-
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'footable');
-        FootableAsset::register(Yii::$app->getView());
+//        $js = <<<JS
+//
+//$('.table-footable').footable();
+//
+//JS;
+//
+//        Yii::$app->getView()->registerJs($js, View::POS_READY, 'footable');
+//        FootableAsset::register(Yii::$app->getView());
     }
 
     /**
