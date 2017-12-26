@@ -287,7 +287,7 @@ JS;
             $datas = $model::getSelectData($parentId, $exclude);
             if($datas){
                 $selects[] = Html::dropDownList($inputName, $id, $datas, [
-                    'class' => 'form-control form-control-inline selectpicker',
+                    'class' => 'form-control form-control-inline',
                     'ajax-select' => Url::to(['ajax/select', 'model' => $model, 'input' => $inputName, 'exclude' => $exclude]),
                 ]);
             }
@@ -295,41 +295,12 @@ JS;
 
         if(!$selects){
             $selects[] = Html::dropDownList($inputName, '', [], [
-                'class' => 'form-control form-control-inline selectpicker',
+                'class' => 'form-control form-control-inline',
                 'prompt' => '请选择',
             ]);
         }
 
         $this->parts['{input}'] = join("", $selects);
-
-        $js = <<<JS
-        
-$('.selectpicker').selectpicker({container: 'body'});
-
-$(document).off('change', 'select[ajax-select]');
-$(document).on('change', 'select[ajax-select]', function(){
-    var select = $(this).closest('.bootstrap-select');
-    var url = $(this).attr('ajax-select');
-    var parent_id = $(this).val();
-    
-    select.nextAll('.bootstrap-select').remove();
-    
-    if(parent_id == $(this).children('option').eq(0).val()){
-        return false;
-    }
-    
-    $.post(url, {parent_id: parent_id}, function(datas){
-        if(datas.html){
-            select.after(datas.html);
-            $('.selectpicker').selectpicker({container: 'body'});
-        }
-    }, 'json');
-});
-
-JS;
-
-        Yii::$app->view->registerJs($js, View::POS_READY, 'ajax-select');
-        SelectAsset::register(Yii::$app->getView());
 
         return $this;
     }
