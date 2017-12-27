@@ -324,8 +324,6 @@ $(document).on('change', 'select[ajax-select]', function(){
 JS;
 
         Yii::$app->view->registerJs($js, View::POS_READY, 'ajax-select');
-        SelectAsset::register(Yii::$app->getView());
-        SelectFixAsset::register(Yii::$app->getView());
 
         return $this;
     }
