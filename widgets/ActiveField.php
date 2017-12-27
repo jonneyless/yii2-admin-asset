@@ -300,6 +300,33 @@ JS;
 
         $this->parts['{input}'] = join("", $selects);
 
+        $js = <<<JS
+        
+$(document).off('change', 'select[ajax-select]');
+$(document).on('change', 'select[ajax-select]', function(){
+    var select = $(this);
+    var url = $(this).attr('ajax-select');
+    var parent_id = $(this).val();
+    
+    select.nextAll('select').remove();
+    
+    if(parent_id == $(this).children('option').eq(0).val()){
+        return false;
+    }
+    
+    $.post(url, {parent_id: parent_id}, function(datas){
+        if(datas.html){
+            select.after(datas.html);
+        }
+    }, 'json');
+});
+
+JS;
+
+        Yii::$app->view->registerJs($js, View::POS_READY, 'ajax-select');
+        SelectAsset::register(Yii::$app->getView());
+        SelectFixAsset::register(Yii::$app->getView());
+
         return $this;
     }
 
