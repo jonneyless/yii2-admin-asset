@@ -3,6 +3,7 @@
 namespace ijony\admin\widgets;
 
 use Yii;
+use yii\base\ErrorException;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -134,7 +135,13 @@ class Sidebar extends Widget
 
     private function renderChilds($items)
     {
-        foreach($items as &$item){
+        $return = [];
+
+        foreach($items as $item){
+            if(!$item['show']){
+                continue;
+            }
+
             $name = $item['name'];
             $arrow = '';
             $childs = '';
@@ -151,10 +158,10 @@ class Sidebar extends Widget
                 $options = ['class' => 'active'];
             }
 
-            $item = Html::tag('li', $link . $childs, $options);
+            $return[] = Html::tag('li', $link . $childs, $options);
         }
 
-        return implode("\n", $items);
+        return implode("\n", $return);
     }
 
     private function parseItems()
