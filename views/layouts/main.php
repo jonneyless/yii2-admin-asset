@@ -92,7 +92,7 @@ AppAsset::register($this);
         </div>
         <?php } ?>
 
-        <div class="wrapper-content animated fadeIn">
+        <div class="wrapper-content animated fadeInRight">
             <?= $content ?>
         </div>
 

@@ -17,3 +17,7 @@ body{
 .form-group.has-error{
     margin-bottom: 5px;
 }
+
+.input-group-addon{
+    border-radius: 3px;
+}

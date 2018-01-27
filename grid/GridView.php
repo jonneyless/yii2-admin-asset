@@ -13,11 +13,19 @@ class GridView extends \yii\grid\GridView
     public $layoutFix = false;
     public $footable = false;
     public $options = ['class' => 'ibox-content'];
-    public $tableOptions = ['class' => 'table table-footable table-striped'];
+    public $tableOptions = ['class' => 'table table-striped'];
     public $layout = "{items}";
 
     public function run()
     {
+        if($this->footable){
+            if($this->tableOptions['class']){
+                $this->tableOptions['class'] .= ' table-footable';
+            }else{
+                $this->tableOptions['class'] = 'table-footable';
+            }
+        }
+
         if($this->layoutFix){
             if($this->tableOptions['class']){
                 $this->tableOptions['class'] .= ' table-layout-fix';

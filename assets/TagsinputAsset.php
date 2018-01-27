@@ -15,6 +15,7 @@ class TagsinputAsset extends AssetBundle
         'css/fix/tagsinput.css',
     ];
     public $js = [
+        'js/plugins/bootstrap3-typeahead.min.js',
         'js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js',
     ];
     public $depends = [

@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use qooapp\admin\widgets\Alert;
 
 $this->title = '登录';
 $this->params['breadcrumbs'][] = $this->title;
@@ -28,4 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end(); ?>
         </div>
     </div>
+
+    <?= Alert::widget() ?>
 <?php $this->endContent();?>

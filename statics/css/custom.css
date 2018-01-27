@@ -16,8 +16,13 @@
     padding: 30px 25px;
 }
 
+.nav-header img{
+    max-width: 50px;
+    max-height: 50px;
+}
+
 .middle-box h1 {
-    font-size: 155px;
+    font-size: 145px;
 }
 
 .logo-element {

@@ -74,8 +74,10 @@ class Sidebar extends Widget
         if(!Yii::$app->user->getIsGuest()){
             $user = Yii::$app->user->getIdentity();
 
+            $this->username = $user->getUserName();
+
             if(isset($user->avatar)){
-                $this->avatar = \ijony\helpers\Url::getStatic($user->avatar);
+                $this->avatar = \ijony\helpers\Image::getImg($user->avatar);
             }
 
             if(method_exists($user, 'getRoleName')){

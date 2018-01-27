@@ -2,8 +2,10 @@
 
 namespace ijony\admin\widgets;
 
+use ijony\admin\assets\ChosenAsset;
 use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
+use ijony\admin\assets\DatetimepickerAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\SelectAsset;
 use ijony\admin\assets\SummerNoteAsset;
@@ -12,7 +14,9 @@ use ijony\admin\assets\TagsinputAsset;
 use ijony\helpers\Image;
 use Yii;
 use yii\bootstrap\Html;
+use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\web\JsExpression;
 use yii\web\View;
 
 /**
@@ -130,25 +134,6 @@ class ActiveField extends \yii\bootstrap\ActiveField
                 'class' => 'input-group'
             ]
         );
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function dropDownList($items, $options = [])
-    {
-        if(!isset($options['class'])){
-            $options['class'] = 'form-control selectpicker';
-        }else{
-            $options['class'] .= ' form-control selectpicker';
-        }
-
-        $options = array_merge($this->inputOptions, $options);
-        $this->addAriaAttributes($options);
-        $this->adjustLabelFor($options);
-        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
 
         return $this;
     }
@@ -459,16 +444,26 @@ JS;
     }
 
     /**
-     * 日期选择
+     * 带时间日期选择
      *
      * @param array $options
      *
      * @return $this
      */
-    public function date($options = [])
+    public function datetime($options = [])
     {
-        $dateTemplate = "Y-m-d";
-        $layTemplate = "YYYY-MM-DD";
+        $dateTemplate = "Y-m-d H:i:s";
+        $pickerTemplate = "yyyy-mm-dd hh:ii:ss";
+
+        if(isset($options['dateTemplate'])){
+            $dateTemplate = $options['dateTemplate'];
+            unset($options['dateTemplate']);
+        }
+
+        if(isset($options['pickerTemplate'])){
+            $pickerTemplate = $options['pickerTemplate'];
+            unset($options['pickerTemplate']);
+        }
 
         $inputId = Html::getInputId($this->model, $this->attribute);
         $inputName = Html::getInputName($this->model, $this->attribute);
@@ -479,6 +474,89 @@ JS;
         }else{
             $inputValue = is_integer($inputValue) ? date($dateTemplate, $inputValue) : $inputValue;
         }
+
+        $inputValue = substr($inputValue, 0, strlen($pickerTemplate));
+
+        if(!isset($options['class'])){
+            $options['class'] = 'form-control';
+        }
+
+        $options['id'] = $inputId;
+
+        $this->parts['{input}'] = Html::tag(
+            'div',
+            Html::textInput($inputName, $inputValue, $options) .
+            Html::tag(
+                'span',
+                Html::tag(
+                    'i',
+                    '',
+                    [
+                        'class' => 'fa fa-calendar',
+                        'aria-hidden' => 'true',
+                    ]
+                ),
+                [
+                    'class' => 'input-group-addon'
+                ]
+            ),
+            [
+                'class' => 'input-group datetime'
+            ]
+        );
+
+        $js = <<<JS
+        
+$('#$inputId').datetimepicker({
+    format: '$pickerTemplate',
+    autoclose: true,
+    todayHighlight: true,
+    toggleActive: true,
+    forceParse: true,
+    language: 'zh-CN'
+});
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datetimepicker-' . $inputId);
+        DatetimepickerAsset::register(Yii::$app->getView());
+
+        return $this;
+    }
+
+    /**
+     * 日期选择
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function date($options = [])
+    {
+        $dateTemplate = "Y-m-d";
+        $pickerTemplate = "yyyy-mm-dd";
+
+        if(isset($options['dateTemplate'])){
+            $dateTemplate = $options['dateTemplate'];
+            unset($options['dateTemplate']);
+        }
+
+        if(isset($options['pickerTemplate'])){
+            $pickerTemplate = $options['pickerTemplate'];
+            unset($options['pickerTemplate']);
+        }
+
+        $inputId = Html::getInputId($this->model, $this->attribute);
+        $inputName = Html::getInputName($this->model, $this->attribute);
+        $inputValue = Html::getAttributeValue($this->model, $this->attribute);
+
+        if(!$inputValue){
+            $inputValue = '';
+        }else{
+            $inputValue = is_integer($inputValue) ? date($dateTemplate, $inputValue) : $inputValue;
+        }
+
+        $inputValue = substr($inputValue, 0, strlen($pickerTemplate));
 
         if(!isset($options['class'])){
             $options['class'] = 'form-control';
@@ -511,10 +589,11 @@ JS;
         $js = <<<JS
         
 $('.input-group.date').datepicker({
-    format: 'yyyy-mm-dd',
+    format: '$pickerTemplate',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
+    forceParse: true,
     language: 'zh-CN'
 });
 
@@ -569,6 +648,47 @@ JS;
     }
 
     /**
+     * 选择框
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function chosen($items, $options = [])
+    {
+        $inputId = Html::getInputId($this->model, $this->attribute);
+
+        $class = "chosen-select";
+
+        if(isset($options['class'])){
+            $class .= $options['class'];
+        }
+
+        $options['class'] = $class;
+        $options['prompt'] = '请选择';
+        $options['data-placeholder'] = '请选择';
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
+
+        $js = <<<JS
+        
+$('#$inputId').chosen({
+    width: "100%",
+    no_results_text: "没有匹配项："
+});
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'chosen_' . $inputId);
+        ChosenAsset::register(Yii::$app->getView());
+
+        return $this;
+    }
+
+    /**
      * 标签输入框
      *
      * @param array $options
@@ -579,18 +699,40 @@ JS;
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
 
+        $source = '';
+        if(isset($options['source'])){
+            $source = $options['source'];
+            unset($options['source']);
+        }
+
         $options = array_merge($this->inputOptions, $options);
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
 
-        $js = <<<JS
+        $params['tagClass'] = 'label label-primary';
+
+        if($source){
+            $js = <<<JS
+$('#$inputId').tagsinput({
+    tagClass: 'label label-primary',
+    typeahead: {
+        source: function(query, process) {
+            return $source;
+        }
+    }
+});
+
+JS;
+        }else{
+            $js = <<<JS
 
 $('#$inputId').tagsinput({
     tagClass: 'label label-primary'
 });
 
 JS;
+        }
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
         TagsinputAsset::register(Yii::$app->getView());
