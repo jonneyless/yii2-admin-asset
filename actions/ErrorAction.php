@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace qooapp\admin\actions;
+namespace ijony\admin\actions;
 
 use Yii;
 use yii\base\Action;

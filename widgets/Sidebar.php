@@ -107,6 +107,8 @@ class Sidebar extends Widget
         $this->parseItems();
 
         foreach($this->items as $item){
+            if(!$item['show']) continue;
+
             $icon = Html::tag('i', '', ['class' => $item['icon']]);
             $name = Html::tag('span', $item['name'], ['class' => 'nav-label']);
             $arrow = '';
