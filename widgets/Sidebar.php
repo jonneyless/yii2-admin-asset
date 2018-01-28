@@ -75,7 +75,9 @@ class Sidebar extends Widget
         if(!Yii::$app->user->getIsGuest()){
             $user = Yii::$app->user->getIdentity();
 
-            $this->username = $user->getUserName();
+            if(method_exists($user, 'getUserName')){
+                $this->username = $user->getUserName();
+            }
 
             if(isset($user->avatar)){
                 $this->avatar = \ijony\helpers\Image::getImg($user->avatar);
@@ -108,7 +110,9 @@ class Sidebar extends Widget
         $this->parseItems();
 
         foreach($this->items as $item){
-            if(!$item['show']) continue;
+            if(!$item['show']){
+                continue;
+            }
 
             $icon = Html::tag('i', '', ['class' => $item['icon']]);
             $name = Html::tag('span', $item['name'], ['class' => 'nav-label']);
@@ -135,10 +139,9 @@ class Sidebar extends Widget
 
     private function renderChilds($items)
     {
-        $return = [];
-
-        foreach($items as $item){
+        foreach($items as $index => &$item){
             if(!$item['show']){
+                unset($items['index']);
                 continue;
             }
 
@@ -158,10 +161,10 @@ class Sidebar extends Widget
                 $options = ['class' => 'active'];
             }
 
-            $return[] = Html::tag('li', $link . $childs, $options);
+            $item = Html::tag('li', $link . $childs, $options);
         }
 
-        return implode("\n", $return);
+        return implode("\n", $items);
     }
 
     private function parseItems()
@@ -224,10 +227,5 @@ class Sidebar extends Widget
         }
 
         return $data;
-    }
-
-    public function renderItem()
-    {
-
     }
 }
