@@ -6,7 +6,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 
 $delay = isset($delay) ? $delay : 3;
-$url = isset($url) ? $url : 'javascript:history.go(-1)';
+$url = isset($url) ? $url : Yii::$app->getUser()->getReturnUrl('/');
 
 if(is_array($url)){
     $url = Url::to($url);
