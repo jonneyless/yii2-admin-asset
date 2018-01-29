@@ -141,7 +141,7 @@ class Sidebar extends Widget
     {
         foreach($items as $index => &$item){
             if(!$item['show']){
-                unset($items['index']);
+                unset($items[$index]);
                 continue;
             }
 
