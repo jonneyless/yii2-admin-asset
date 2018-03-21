@@ -59,11 +59,19 @@ AppAsset::register($this);
                         </li>
                         <?php } ?>
                     <?php } ?>
+                    <?php if(Yii::$app->user->getIsGuest()){ ?>
+                    <li>
+                        <a href="<?= Url::to(['site/login']) ?>">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> 登录
+                        </a>
+                    </li>
+                    <?php }else{ ?>
                     <li>
                         <a href="<?= Url::to(['site/logout']) ?>">
                             <i class="fa fa-sign-out" aria-hidden="true"></i> 注销
                         </a>
                     </li>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
