@@ -65,11 +65,11 @@ class Sidebar extends Widget
         }
 
         if(!$this->username){
-            $this->username = 'admin';
+            $this->username = Yii::$app->user->getIsGuest() ? 'Guest' : 'Admin';
         }
 
         if(!$this->rolename){
-            $this->rolename = '管理员';
+            $this->rolename = Yii::$app->user->getIsGuest() ? '游客' : '管理员';
         }
 
         if(!Yii::$app->user->getIsGuest()){
