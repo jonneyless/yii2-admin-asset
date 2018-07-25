@@ -163,6 +163,7 @@ ul.notes li div small {
 
 .image-upload{
     width: 150px;
+    min-height: 50px;
     border: 1px solid #e5e6e7;
     position: relative;
     overflow: hidden;

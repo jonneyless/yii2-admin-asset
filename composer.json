@@ -32,6 +32,9 @@
             "ijony\\admin\\": ""
         }
     },
+    "extra": {
+        "bootstrap": "ijony\\admin\\Bootstrap"
+    },
     "config": {
         "process-timeout": 1800
     }
