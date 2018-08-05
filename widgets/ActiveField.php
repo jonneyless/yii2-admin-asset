@@ -172,54 +172,116 @@ HTML;
      *
      * @return $this
      */
-    public function image()
+    public function image($options = [])
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
         $inputName = Html::getInputName($this->model, $this->attribute);
         $inputValue = Html::getAttributeValue($this->model, $this->attribute);
 
+        $minWidth = 0;
+        $minHeight = 0;
+        $scale = 0;
+
         $preview = Image::getImg($inputValue, 300);
 
         $data = Html::img($preview, ['data-default' => $preview]);
 
+        if(isset($options['width'])){
+            $minWidth = $options['width'];
+        }
+
+        if(isset($options['height'])){
+            $minHeight = $options['height'];
+        }
+
+        if($minWidth && $minHeight){
+            $scale = $minWidth / $minHeight;
+        }
+
         if($inputValue){
             $data .= Html::hiddenInput($inputName, $inputValue, ['id' => $inputId]);
-            $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input']);
+            $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
         }else{
-            $data .= Html::fileInput($inputName, $inputValue, ['id' => $inputId, 'class' => 'image-upload-input']);
+            $data .= Html::fileInput($inputName, $inputValue, ['id' => $inputId, 'class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
         }
 
         $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload']);
 
         $js = <<<JS
-$('.image-upload-input').change(function(){
+
+$(document).on('change', '.image-upload-input', function(){
+    var fileInput = $(this);
+    var newFileInput = $(this).clone().val("").removeAttr('data-src');
+    var label = fileInput.closest('.form-group').find('label').text();
+    var minWidth = parseInt(fileInput.attr('data-width'));
+    var minHeight = parseInt(fileInput.attr('data-height'));
+    var oScale = parseFloat(fileInput.attr('data-scale'));
     var imgUrl = null;
     var objUrl = this.files[0];
-    var filename = $(this).val();
-    var previewImg = $(this).parent().find('img');
+    var filename = fileInput.val();
+    var previewImg = fileInput.parent().find('img');
     
     fileExt = filename.substr(filename.lastIndexOf(".")).toLowerCase();
     
-    $(this).closest('.form-group').removeClass('has-error');
-    $(this).closest('.form-group').find('.help-block-error').text('');
+    fileInput.closest('.form-group').addClass('has-error');
+    
     previewImg.attr('src', previewImg.attr('data-default'));
     
     if(fileExt != '.jpg' && fileExt != '.jpeg' && fileExt != '.png' && fileExt != '.gif'){
-        $(this).closest('.form-group').addClass('has-error');
-        $(this).closest('.form-group').find('.help-block-error').text('图片格式不对，只能上传 jpg、png 和 gif 格式！');
-    }else{
-        if(window.createObjectURL != undefined){
-            imgUrl = window.createObjectURL(objUrl) ;
-        }else if (window.URL != undefined){
-            imgUrl = window.URL.createObjectURL(objUrl) ;
-        }else if (window.webkitURL != undefined){
-            imgUrl = window.webkitURL.createObjectURL(objUrl) ;
-        }
-        
-        if(imgUrl){
-            previewImg.attr('src', imgUrl);
-        }
+        toastr('error', '图片格式不对，只能上传 jpg、png 和 gif 格式！');
+        fileInput.after(newFileInput).remove();
+        return;
     }
+    
+    if(window.createObjectURL != undefined){
+        imgUrl = window.createObjectURL(objUrl) ;
+    }else if (window.URL != undefined){
+        imgUrl = window.URL.createObjectURL(objUrl) ;
+    }else if (window.webkitURL != undefined){
+        imgUrl = window.webkitURL.createObjectURL(objUrl) ;
+    }
+    
+    if(imgUrl){
+        var img = new Image;
+        
+        img.onload = function(){
+            var width = img.width;
+            var height = img.height;
+            var scale = width/height;
+            var filesize = img;
+            
+            if(minWidth > 0 && minHeight == 0 && minWidth != width){
+                toastr.error(label + '宽度要求为' + minWidth + 'px！');
+                fileInput.after(newFileInput).remove();
+                return;
+            }
+            
+            if(minHeight > 0 && minWidth == 0 && minHeight != height){
+                toastr.error(label + '高度要求为' + minWidth + 'px！');
+                fileInput.after(newFileInput).remove();
+                return;
+            }
+            
+            if(minWidth > 0 && minHeight > 0 && minWidth != width && minHeight != height && (oScale + 0.01 < scale || oScale - 0.01 > scale)){
+                toastr.error(label + '尺寸为 ' + minWidth + '*' + minHeight + ' px 或同比例的其他尺寸！');
+                fileInput.after(newFileInput).remove();
+                return;
+            }
+            
+            fileInput.attr('data-src', imgUrl);
+            previewImg.attr('src', imgUrl);
+        };
+        
+        img.onerror=function(){  
+            toastr.error(label + '上传失败！');
+            fileInput.after(newFileInput).remove();
+            return;
+        };
+        
+        img.src = imgUrl;
+    }
+    
+    fileInput.closest('.form-group').removeClass('has-error');
 });
 JS;
 

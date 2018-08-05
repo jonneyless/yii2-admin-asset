@@ -11,11 +11,13 @@ class ActionColumn extends \yii\grid\ActionColumn
     public $header = '操作';
     public $headerOptions = ['class' => 'text-right'];
     public $contentOptions = ['class' => 'text-right'];
+    public $templateOptions = ['class' => 'btn-group'];
 
     public function init()
     {
         parent::init();
-        $this->template = Html::tag('div', $this->template, ['class' => 'btn-group']);
+	
+        $this->template = Html::tag('div', $this->template, $this->templateOptions);
         $this->initDefaultButtons();
     }
 

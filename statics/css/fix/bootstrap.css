@@ -21,3 +21,17 @@ body{
 .input-group-addon{
     border-radius: 3px;
 }
+
+.input-group-addon{
+    border-radius: 3px;
+}
+
+.radio, .checkbox {
+    display: block;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.radio-inline, .checkbox-inline {
+    display: inline-block;
+}
