@@ -204,7 +204,7 @@ $('.image-upload-input').change(function(){
     $(this).closest('.form-group').find('.help-block-error').text('');
     previewImg.attr('src', previewImg.attr('data-default'));
     
-    if(fileExt != '.jpg' && fileExt != '.png' && fileExt != '.gif'){
+    if(fileExt != '.jpg' && fileExt != '.jpeg' && fileExt != '.png' && fileExt != '.gif'){
         $(this).closest('.form-group').addClass('has-error');
         $(this).closest('.form-group').find('.help-block-error').text('图片格式不对，只能上传 jpg、png 和 gif 格式！');
     }else{

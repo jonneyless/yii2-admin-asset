@@ -1,6 +1,6 @@
 <?php
 
-namespace qooapp\admin\assets;
+namespace ijony\admin\assets;
 
 use yii\web\AssetBundle;
 
