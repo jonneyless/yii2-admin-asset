@@ -222,7 +222,6 @@ $(document).on('change', '.image-upload-input', function(){
     var previewImg = fileInput.parent().find('img');
     
     fileExt = filename.substr(filename.lastIndexOf(".")).toLowerCase();
-    $('#products-name').val(filename.substr(filename.lastIndexOf("\\\\") + 1, filename.lastIndexOf(".") - filename.lastIndexOf("\\\\") - 1));
     
     fileInput.closest('.form-group').addClass('has-error');
     
