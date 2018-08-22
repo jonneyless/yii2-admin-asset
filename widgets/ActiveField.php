@@ -182,12 +182,8 @@ HTML;
 
         $data = Html::img($preview, ['data-default' => $preview]);
 
-        if($inputValue){
-            $data .= Html::hiddenInput($inputName, $inputValue, ['id' => $inputId]);
-            $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input']);
-        }else{
-            $data .= Html::fileInput($inputName, $inputValue, ['id' => $inputId, 'class' => 'image-upload-input']);
-        }
+        $data .= Html::hiddenInput($inputName, $inputValue, ['id' => $inputId]);
+        $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input']);
 
         $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload']);
 
