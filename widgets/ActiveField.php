@@ -198,12 +198,8 @@ HTML;
             $scale = $minWidth / $minHeight;
         }
 
-        if($inputValue){
-            $data .= Html::hiddenInput($inputName, $inputValue, ['id' => $inputId]);
-            $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
-        }else{
-            $data .= Html::fileInput($inputName, $inputValue, ['id' => $inputId, 'class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
-        }
+        $data .= Html::hiddenInput($inputName, $inputValue, ['id' => $inputId]);
+        $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
 
         $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload']);
 
