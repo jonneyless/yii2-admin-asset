@@ -327,11 +327,16 @@ JS;
 
             $datas = $model::getSelectData($parentId, $exclude);
             if($datas){
-                $selects[] = Html::dropDownList($inputName, $id, $datas, [
+                $params = [
                     'class' => 'form-control form-control-inline',
                     'ajax-select' => Url::to(['ajax/select', 'model' => $model, 'input' => $inputName, 'exclude' => $exclude]),
-                    'prompt' => '请选择',
-                ]);
+                ];
+
+                if(!$parentId){
+                    $params['prompt'] = '请选择';
+                }
+
+                $selects[] = Html::dropDownList($inputName, $id, $datas, $params);
             }
         }
 
