@@ -6,6 +6,35 @@ $(document).ready(function(){
     }
 
     $('#side-menu').metisMenu();
+    // Collapse ibox function
+    $(document).on('click', '.collapse-link', function () {
+        var ibox = $(this).closest('div.ibox');
+        var button = $(this).find('i');
+        var content = ibox.children('.ibox-content');
+        content.slideToggle(200);
+        button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+        ibox.toggleClass('').toggleClass('border-bottom');
+        setTimeout(function () {
+            ibox.resize();
+            ibox.find('[id^=map-]').resize();
+        }, 50);
+    });
+    // Close ibox function
+    $(document).on('click', '.close-link', function () {
+        var content = $(this).closest('div.ibox');
+        content.remove();
+    });
+    // Fullscreen ibox function
+    $(document).on('click', '.fullscreen-link', function () {
+        var ibox = $(this).closest('div.ibox');
+        var button = $(this).find('i');
+        $('body').toggleClass('fullscreen-ibox-mode');
+        button.toggleClass('fa-expand').toggleClass('fa-compress');
+        ibox.toggleClass('fullscreen');
+        setTimeout(function () {
+            $(window).trigger('resize');
+        }, 100);
+    });
 
     $('.sidebar-container').slimScroll({
         height: '100%',
@@ -74,6 +103,30 @@ $(document).ready(function(){
     });
 
     $("[data-toggle=popover]").popover();
+    $(document).on('click', "a.btn-ajax", function () {
+        var btn = $(this);
+        var url = $(this).attr('href');
+        $.get(url, function (data) {
+            if (data.error) {
+                toastr.error(data.msg);
+            } else {
+                if (data.msg) {
+                    toastr.success(data.msg);
+                }
+                if (data.btn) {
+                    btn.text(data.btn.text);
+                    btn.attr('title', data.btn.text);
+                    if (data.btn.class) {
+                        btn.attr('class', data.btn.class);
+                    }
+                    if (data.btn.href) {
+                        btn.attr('href', data.btn.href);
+                    }
+                }
+            }
+        }, 'json');
+        return false;
+    });
 
     $('.full-height-scroll').slimscroll({
         height: '100%'
@@ -95,6 +148,16 @@ $(document).ready(function(){
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+    $(document).on('click', 'a[rel$=picker]', function () {
+        var button = $(this);
+        var type = button.attr('rel');
+        var input = button.closest('.input-group').children('input');
+        if (type == 'datetimepicker') {
+            input.datetimepicker('show');
+        } else {
+            input.datepicker('show');
+        }
+    });
 });
 
 function SmoothlyMenu(){

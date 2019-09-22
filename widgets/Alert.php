@@ -45,6 +45,7 @@ class Alert extends \yii\bootstrap\Widget
             }
             $data = (array) $data;
             foreach ($data as $message) {
+                $message = str_replace('\'', '&apos;', $message);
                 $js[] = <<<JS
 toastr.$type('$message');
 JS;

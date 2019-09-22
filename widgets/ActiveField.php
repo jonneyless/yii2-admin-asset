@@ -115,6 +115,30 @@ class ActiveField extends \yii\bootstrap\ActiveField
             unset($options['buttonOptions']);
         }
 
+        $groupOptions = [];
+        if (isset($buttonOptions['group'])) {
+            $groupOptions = $buttonOptions['group'];
+            unset($buttonOptions['group']);
+            foreach ($groupOptions as &$item) {
+                $item = array_merge($buttonOptions, $item);
+            }
+        }
+
+        $buttons = [];
+        if (is_array($buttonText)) {
+            foreach ($buttonText as $index => $text) {
+                $buttons[] = Html::button(
+                    $text,
+                    isset($groupOptions[$index]) ? $groupOptions[$index] : $buttonOptions
+                );
+            }
+        } else {
+            $buttons[] = Html::button(
+                $buttonText,
+                $buttonOptions
+            );
+        }
+
         $options = array_merge($this->inputOptions, $options);
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::tag(
@@ -122,10 +146,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
             Html::activeTextInput($this->model, $this->attribute, $options) .
             Html::tag(
                 'div',
-                Html::button(
-                    $buttonText,
-                    $buttonOptions
-                ),
+                join("\n", $buttons),
                 [
                     'class' => 'input-group-btn'
                 ]
@@ -141,11 +162,18 @@ class ActiveField extends \yii\bootstrap\ActiveField
     /**
      * 文件上传
      *
+     * @param array $options
+     *
      * @return $this
      */
-    public function file()
+    public function file($options = [])
     {
         $inputName = Html::getInputName($this->model, $this->attribute);
+
+        if (isset($options['name'])) {
+            $inputName = $options['name'];
+            unset($options['name']);
+        }
 
         $this->parts['{input}'] = <<<HTML
 <div class="fileinput fileinput-new input-group" data-provides="fileinput">
@@ -170,38 +198,78 @@ HTML;
     /**
      * 单图上传
      *
+     * @param array $options
+     *
      * @return $this
      */
     public function image($options = [])
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
-        $inputName = Html::getInputName($this->model, $this->attribute);
-        $inputValue = Html::getAttributeValue($this->model, $this->attribute);
 
         $minWidth = 0;
         $minHeight = 0;
         $scale = 0;
 
+        if (isset($options['name'])) {
+            $inputName = $options['name'];
+            unset($options['name']);
+        } else {
+            $inputName = Html::getInputName($this->model, $this->attribute);
+        }
+
+        if (isset($options['value'])) {
+            $inputValue = $options['value'];
+            unset($options['value']);
+        } else {
+            $inputValue = Html::getAttributeValue($this->model, $this->attribute);
+        }
+
+        $responsive = false;
+        if (isset($options['responsive'])) {
+            $responsive = $options['responsive'];
+            unset($options['responsive']);
+        }
+
         $preview = Image::getImg($inputValue, 300);
 
-        $data = Html::img($preview, ['data-default' => $preview]);
+        $imageOptions = [
+            'data-default' => $preview,
+        ];
+
+        if (isset($options['imageOptions'])) {
+            $imageOptions = array_merge($imageOptions, $options['imageOptions']);
+            unset($options['imageOptions']);
+        }
+
+        $data = Html::img($preview, $imageOptions);
 
         if(isset($options['width'])){
             $minWidth = $options['width'];
+            unset($options['width']);
         }
 
         if(isset($options['height'])){
             $minHeight = $options['height'];
+            unset($options['height']);
+        }
+
+        if (!isset($options['id'])) {
+            $options['id'] = $inputId;
         }
 
         if($minWidth && $minHeight){
             $scale = $minWidth / $minHeight;
         }
 
-        $data .= Html::hiddenInput($inputName, $inputValue, ['id' => $inputId]);
-        $data .= Html::fileInput($inputName, $inputValue, ['class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
+        $data .= Html::hiddenInput($inputName, $inputValue, $options);
+        $data .= Html::fileInput($inputName, $inputValue, ['id' => $inputId, 'class' => 'image-upload-input', 'data-width' => $minWidth, 'data-height' => $minHeight, 'data-scale' => $scale]);
 
-        $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload']);
+        if ($responsive) {
+            $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload image-upload-responsive']);
+        } else {
+            $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload']);
+        }
+
 
         $js = <<<JS
 
@@ -440,16 +508,25 @@ JS;
 
         if(isset($options['has_time'])){
             $hasTime = $options['has_time'];
+            unset($options['has_time']);
         }
 
         if($hasTime){
             $dateTemplate = "Y-m-d H:i:ss";
-            $layTemplate = "YYYY-MM-DD hh:mm:ss";
-            $layIsTime = 'true';
         }else{
             $dateTemplate = "Y-m-d";
-            $layTemplate = "YYYY-MM-DD";
-            $layIsTime = 'false';
+        }
+
+        $startDate = date('Y-m-d', 0);
+        if (isset($options['startDate'])) {
+            $startDate = $options['startDate'];
+            unset($options['startDate']);
+        }
+
+        $endDate = date('Y-m-d', 2133999048);
+        if (isset($options['endDate'])) {
+            $endDate = $options['endDate'];
+            unset($options['endDate']);
         }
 
         $beginInputId = Html::getInputId($this->model, $this->attribute);
@@ -473,7 +550,11 @@ JS;
             $endValue = is_integer($endValue) ? date($dateTemplate, $endValue) : $endValue;
         }
 
-        $template = '<div class="input-daterange input-group">%s<span class="input-group-addon">到</span>%s</div>';
+        if ($hasTime) {
+            $template = '<div class="datetimepicker-box"><div class="input-daterange input-group">%s<span class="input-group-addon">到</span>%s</div></div>';
+        } else {
+            $template = '<div class="datepicker-box"><div class="input-daterange input-group">%s<span class="input-group-addon">到</span>%s</div></div>';
+        }
 
         if(!isset($options['class'])){
             $options['class'] = 'form-control';
@@ -489,20 +570,46 @@ JS;
 
         $this->parts['{input}'] = sprintf($template, $beginInput, $endInput);
 
-        $js = <<<JS
-        
-$('.input-daterange').datepicker({
-    format: 'yyyy-mm-dd',
+        $language = Yii::$app->language;
+
+        if ($hasTime) {
+            $js = <<<JS
+
+$('.datetimepicker-box .input-daterange input').datetimepicker({
+    format: 'yyyy-mm-dd hh:ii:ss',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
-    language: 'zh-CN'
+    forceParse: true,
+    zIndexOffset: 1001,
+    startDate: '$startDate',
+    endDate: '$endDate',
+    language: '$language'
 });
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker-daterange');
-        DatepickerAsset::register(Yii::$app->getView());
+            Yii::$app->getView()->registerJs($js, View::POS_READY, 'datetimepicker-daterange');
+            DatetimepickerAsset::register(Yii::$app->getView());
+        } else {
+            $js = <<<JS
+        
+$('.datepicker-box .input-daterange').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true,
+    toggleActive: true,
+    zIndexOffset: 1001,
+    startDate: '$startDate',
+    endDate: '$endDate',
+    language: '$language'
+});
+
+JS;
+
+            Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker-daterange');
+            DatepickerAsset::register(Yii::$app->getView());
+        }
 
         return $this;
     }
@@ -529,6 +636,18 @@ JS;
             unset($options['pickerTemplate']);
         }
 
+        $startDate = date('Y-m-d', 0);
+        if (isset($options['startDate'])) {
+            $startDate = $options['startDate'];
+            unset($options['startDate']);
+        }
+
+        $endDate = date('Y-m-d', 2133999048);
+        if (isset($options['endDate'])) {
+            $endDate = $options['endDate'];
+            unset($options['endDate']);
+        }
+
         $inputId = Html::getInputId($this->model, $this->attribute);
         $inputName = Html::getInputName($this->model, $this->attribute);
         $inputValue = Html::getAttributeValue($this->model, $this->attribute);
@@ -550,24 +669,32 @@ JS;
         $this->parts['{input}'] = Html::tag(
             'div',
             Html::textInput($inputName, $inputValue, $options) .
-            Html::tag(
-                'span',
-                Html::tag(
-                    'i',
-                    '',
+            Html::tag('span',
+                Html::a(
+                    Html::tag(
+                        'i',
+                        '',
+                        [
+                            'class' => 'fa fa-calendar',
+                            'aria-hidden' => 'true',
+                        ]
+                    ),
+                    'javascript:;',
                     [
-                        'class' => 'fa fa-calendar',
-                        'aria-hidden' => 'true',
+                        'class' => 'btn btn-default',
+                        'rel' => 'datetimepicker',
                     ]
                 ),
                 [
-                    'class' => 'input-group-addon'
+                    'class' => 'input-group-btn',
                 ]
             ),
             [
                 'class' => 'input-group datetime'
             ]
         );
+
+        $language = Yii::$app->language;
 
         $js = <<<JS
         
@@ -577,7 +704,10 @@ $('#$inputId').datetimepicker({
     todayHighlight: true,
     toggleActive: true,
     forceParse: true,
-    language: 'zh-CN'
+    zIndexOffset: 1001,
+    startDate: '$startDate',
+    endDate: '$endDate',
+    language: '$language'
 });
 
 JS;
@@ -610,6 +740,29 @@ JS;
             unset($options['pickerTemplate']);
         }
 
+        $startDateTemplate = 'Y-m-d';
+        $minViewMode = 0;
+        if (isset($options['minViewMode'])) {
+            $minViewMode = $options['minViewMode'];
+            unset($options['minViewMode']);
+
+            if ($minViewMode == 1) {
+                $startDateTemplate = 'Y-m';
+            }
+        }
+
+        $startDate = date($startDateTemplate, 0);
+        if (isset($options['startDate'])) {
+            $startDate = $options['startDate'];
+            unset($options['startDate']);
+        }
+
+        $endDate = date($startDateTemplate, 2133999048);
+        if (isset($options['endDate'])) {
+            $endDate = $options['endDate'];
+            unset($options['endDate']);
+        }
+
         $inputId = Html::getInputId($this->model, $this->attribute);
         $inputName = Html::getInputName($this->model, $this->attribute);
         $inputValue = Html::getAttributeValue($this->model, $this->attribute);
@@ -631,8 +784,7 @@ JS;
         $this->parts['{input}'] = Html::tag(
             'div',
             Html::textInput($inputName, $inputValue, $options) .
-            Html::tag(
-                'span',
+            Html::a(
                 Html::tag(
                     'i',
                     '',
@@ -641,8 +793,10 @@ JS;
                         'aria-hidden' => 'true',
                     ]
                 ),
+                'javascript:;',
                 [
-                    'class' => 'input-group-addon'
+                    'class' => 'input-group-addon',
+                    'rel' => 'datepicker',
                 ]
             ),
             [
@@ -650,20 +804,26 @@ JS;
             ]
         );
 
+        $language = Yii::$app->language;
+
         $js = <<<JS
         
-$('.input-group.date').datepicker({
+$('#$inputId').datepicker({
     format: '$pickerTemplate',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
     forceParse: true,
-    language: 'zh-CN'
+    language: '$language',
+    zIndexOffset: 1001,
+    startDate: '$startDate',
+    endDate: '$endDate',
+    minViewMode: $minViewMode
 });
 
 JS;
 
-        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker');
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'datepicker-' . $inputId);
         DatepickerAsset::register(Yii::$app->getView());
 
         return $this;
@@ -696,17 +856,115 @@ JS;
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeTextarea($this->model, $this->attribute, $options);
 
+        $language = Yii::$app->language;
+
         $js = <<<JS
         
 $('.is-editor').summernote({
-    lang: 'zh-CN',
-    height: $height
+    lang: '$language',
+    height: $height,
+    toolbar: [
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['insert', ['link', 'picture', 'video', 'emoji']],
+        ['misc', ['fullscreen', 'codeview']],
+    ]
 });
 
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote');
         SummerNoteAsset::register(Yii::$app->getView());
+
+        return $this;
+    }
+
+    /**
+     * 简单版编辑器
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function tinyEditor($options = [])
+    {
+        if (!isset($options['class'])) {
+            $options['class'] = 'form-control is-tiny-editor';
+        } else {
+            $options['class'] .= ' form-control is-tiny-editor';
+        }
+
+        $hiddenOptions = [];
+
+        if (isset($options['name'])) {
+            $hiddenOptions['name'] = $options['name'];
+            unset($options['name']);
+        }
+
+        if (isset($options['value'])) {
+            $value = $options['value'];
+            $hiddenOptions['value'] = $value;
+            unset($options['value']);
+        } else {
+            $value = Html::getAttributeValue($this->model, $this->attribute);
+        }
+
+        if (!isset($options['data-placeholder'])) {
+            $options['data-placeholder'] = "请输入...";
+        }
+
+        $editorOptions = [
+            'toolbar' => [
+                'allowMultiParagraphSelection' => true,
+                'buttons' => ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],
+                'diffLeft' => 0,
+                'diffTop' => -10,
+                'firstButtonClass' => 'medium-editor-button-first',
+                'lastButtonClass' => 'medium-editor-button-last',
+                'relativeContainer' => null,
+                'standardizeSelectionStart' => false,
+                'static' => false,
+                'align' => 'center',
+                'sticky' => false,
+                'updateOnEmptySelection' => false,
+            ],
+            'paste' => [
+                'forcePlainText' => true,
+            ],
+        ];
+
+        if (isset($options['editor-opitons'])) {
+            $editorOptions = ArrayHelper::merge($editorOptions, $options['editor-opitons']);
+            unset($options['editor-opitons']);
+        }
+
+        $editorOptions = Json::encode($editorOptions);
+
+        $options = array_merge($this->inputOptions, $options);
+        $options['contenteditable'] = true;
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::tag('div', $value, $options) . Html::activeHiddenInput($this->model, $this->attribute, $hiddenOptions);
+
+        $js = <<<JS
+        
+var editor = new MediumEditor('.is-tiny-editor', $editorOptions);
+
+$('.is-tiny-editor').closest('form').submit(function(){
+    $('.is-tiny-editor').each(function(index, obj){
+        $('.is-tiny-editor').eq(index).next('input').val($('.is-tiny-editor').eq(index).html());
+    });
+    
+    return true;
+});
+
+JS;
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'medium-editor');
+        MediumEditorAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -722,7 +980,7 @@ JS;
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
 
-        $class = "chosen-select";
+        $class = "form-control chosen-select";
 
         if(isset($options['class'])){
             $class .= $options['class'];
@@ -755,44 +1013,86 @@ JS;
     /**
      * 标签输入框
      *
+     * @param array $source
      * @param array $options
      *
      * @return $this
      */
-    public function tags($options = [])
+    public function tags(array $source = [], $options = [])
     {
         $inputId = Html::getInputId($this->model, $this->attribute);
-
-        $source = '';
-        if(isset($options['source'])){
-            $source = $options['source'];
-            unset($options['source']);
-        }
+        $inputName = Html::getInputName($this->model, $this->attribute);
 
         $options = array_merge($this->inputOptions, $options);
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
-        $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
-
-        $params['tagClass'] = 'label label-primary';
 
         if($source){
+            $ids = Html::getAttributeValue($this->model, $this->attribute);
+
+            if (!$ids) {
+                $ids = [];
+            }
+
+            if (is_string($ids)) {
+                $ids = explode(",", $ids);
+            }
+
+            $tags = [];
+            foreach ($source as $item) {
+                if (in_array($item['id'], $ids) && !isset($tags[$item['id']])) {
+                    $tags[$item['id']] = $item['show'];
+                }
+            }
+
+            $items[] = Html::hiddenInput($inputName, '');
+            foreach ($tags as $id => $name) {
+                $items[] = <<<HTML
+                <label id="tag-$id" class="tag label label-primary">
+                    $name
+                    <input id="$inputId-$id" type="hidden" name="{$inputName}[]" value="$id" />
+                    <span data-role="remove"></span>
+                </label>
+HTML;
+            }
+            $items[] = Html::textInput('', '', ['id' => $inputId . '-tigger']);
+
+            $this->parts['{input}'] = Html::tag('div', join("\n", $items), [
+                'class' => 'form-control bootstrap-tagsinput',
+            ]);
+
+            $source = json_encode($source, JSON_UNESCAPED_UNICODE);
+
             $js = <<<JS
-$('#$inputId').tagsinput({
-    tagClass: 'label label-primary',
-    typeahead: {
-        source: function(query, process) {
-            return $source;
-        }
+$('#{$inputId}-tigger').closest('.bootstrap-tagsinput').click(function(){
+    $('#$inputId').focus();
+});
+        
+$('#{$inputId}-tigger').typeahead({
+    source: $source,
+    updater: function(item){
+        $('#$inputId-tigger').closest('div').find('#tag-' + item.id).remove();
+        $('#$inputId-tigger').before($('<label id="tag-' + item.id + '" class="tag label label-primary">')
+            .text(item.show)
+            .append($('<input id="{$inputId}-' + item.id + '" type="hidden" name="{$inputName}[]">').val(item.id))
+            .append($('<span data-role="remove">'))
+        );
+        return '';
     }
 });
 
+$(document).on('click', '.bootstrap-tagsinput .tag', function(){
+    $(this).remove();
+});
 JS;
+
         }else{
+            $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
+
             $js = <<<JS
 
 $('#$inputId').tagsinput({
-    tagClass: 'label label-primary'
+    tagClass: 'tags label label-primary'
 });
 
 JS;
@@ -800,6 +1100,92 @@ JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'tags_' . $inputId);
         TagsinputAsset::register(Yii::$app->getView());
+
+        return $this;
+    }
+
+    /**
+     * @param       $enableValue
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function switchery($enableValue = 1, $options = [])
+    {
+        $disabled = false;
+        $color = '#1AB394';
+        $class = 'is-switchery';
+
+        if (isset($options['color'])) {
+            $color = $options['color'];
+            unset($options['color']);
+
+            $class = Html::getInputId($this->model, $this->attribute);
+        }
+
+        if (isset($options['disabled']) && $options['disabled']) {
+            $class = 'is-disabled-switchery';
+            $disabled = true;
+        }
+
+        if (!isset($options['class'])) {
+            $options['class'] = $class;
+        } else {
+            $options['class'] .= ' ' . $class;
+        }
+
+        $options['label'] = false;
+
+        if (!$enableValue) {
+            $enableValue = 1;
+        }
+
+        if (is_array($enableValue)) {
+            $options['uncheck'] = $enableValue[0];
+            $enableValue = $enableValue[1];
+        }
+
+        $options['value'] = $enableValue;
+
+        if ($this->form->layout !== 'horizontal') {
+            $this->template = "{label}\n<div>{input}</div>\n{hint}\n{error}";
+        }
+
+        $js = <<<JS
+        
+var elems = Array.prototype.slice.call(document.querySelectorAll('.$class'));
+elems.forEach(function(html) {
+    var switchery = new Switchery(html, {
+        color: '$color'
+    });
+    $('#' + html.id).data('switchery-object', switchery);
+});
+
+JS;
+
+        if ($disabled) {
+            $js = <<<JS
+            
+var elems = Array.prototype.slice.call(document.querySelectorAll('.$class'));
+elems.forEach(function(html) {
+    var switchery = new Switchery(html, {
+        color: '$color'
+    });
+    switchery.disable();
+    $('#' + html.id).data('switchery-object', switchery);
+});
+
+JS;
+        }
+
+        Yii::$app->getView()->registerJs($js, View::POS_READY, 'switchery_' . $class);
+
+        SwitcheryAsset::register(Yii::$app->getView());
+
+        $options = array_merge($this->inputOptions, $options);
+        $this->addAriaAttributes($options);
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
 
         return $this;
     }

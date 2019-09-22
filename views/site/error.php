@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
+/* @var $message */
 
 $delay = isset($delay) ? $delay : 3;
 $url = isset($url) ? $url : Yii::$app->getUser()->getReturnUrl('/');
@@ -53,7 +54,7 @@ if(is_array($url)){
                 window.location = "<?= $url ?>";
                 return false;
             }
-            $('#delay').text(delay);
+            document.getElementById('delay').innerText = delay;
             t = setTimeout("toGo()", 1000);
         }
 

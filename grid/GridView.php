@@ -10,9 +10,14 @@ use yii\web\View;
 class GridView extends \yii\grid\GridView
 {
 
+    public $pager = [
+        'prevPageLabel' => '<i class="fa fa-angle-left"></i>',
+        'nextPageLabel' => '<i class="fa fa-angle-right"></i>',
+        'firstPageLabel' => '<i class="fa fa-angle-double-left"></i>',
+        'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
+    ];
     public $layoutFix = false;
     public $footable = false;
-    public $options = ['class' => 'ibox-content'];
     public $tableOptions = ['class' => 'table table-striped'];
     public $layout = "{items}";
 
@@ -32,6 +37,12 @@ class GridView extends \yii\grid\GridView
             }else{
                 $this->tableOptions['class'] = 'table-layout-fix';
             }
+        }
+
+        if (isset($this->options['class'])) {
+            $this->options['class'] .= ' ibox-content';
+        } else {
+            $this->options['class'] = 'ibox-content';
         }
 
         parent::run();

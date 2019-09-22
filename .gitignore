@@ -1,6 +1,12 @@
 # phpstorm project files
 .idea
 
+yii
+
+/console
+
+messages/config.php
+
 # composer vendor dir
 /vendor
 

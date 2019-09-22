@@ -122,7 +122,11 @@ class Sidebar extends Widget
 
             if(isset($item['items']) && $item['items']){
                 $arrow = Html::tag('span', '', ['class' => 'fa arrow']);
-                $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav nav-second-level collapse']);
+                if ($item['active']) {
+                    $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav nav-second-level collapse in']);
+                } else {
+                    $childs = Html::tag('ul', $this->renderChilds($item['items']), ['class' => 'nav nav-second-level collapse']);
+                }
             }
 
             $link = Html::a($icon . $name . $arrow, $item['url']);
