@@ -21,4 +21,7 @@ class SummerNoteAsset extends AssetBundle
         'js/plugins/summernote/summernote-ext-youtube.js',
         'js/plugins/summernote/summernote.zh-CN.min.js',
     ];
+    public $depends = [
+        'yii\jui\JuiAsset',
+    ];
 }

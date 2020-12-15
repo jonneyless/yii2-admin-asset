@@ -7,16 +7,16 @@ use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\DatetimepickerAsset;
 use ijony\admin\assets\JasnyBootstrapAsset;
-use ijony\admin\assets\SelectAsset;
+use ijony\admin\assets\MediumEditorAsset;
 use ijony\admin\assets\SummerNoteAsset;
 use ijony\admin\assets\SwitcheryAsset;
 use ijony\admin\assets\TagsinputAsset;
 use ijony\helpers\Image;
 use Yii;
 use yii\bootstrap\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use yii\web\JsExpression;
 use yii\web\View;
 
 /**
