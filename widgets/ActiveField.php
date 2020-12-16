@@ -400,10 +400,6 @@ JS;
                     'ajax-select' => Url::to(['ajax/select', 'model' => $model, 'input' => $inputName, 'exclude' => $exclude]),
                 ];
 
-                if(!$parentId){
-                    $params['prompt'] = '请选择';
-                }
-
                 $selects[] = Html::dropDownList($inputName, $id, $datas, $params);
             }
         }
