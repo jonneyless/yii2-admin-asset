@@ -13,7 +13,7 @@ use ijony\admin\assets\SwitcheryAsset;
 use ijony\admin\assets\TagsinputAsset;
 use ijony\helpers\Image;
 use Yii;
-use yii\web\Html;
+use yii\bootstrap5\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
