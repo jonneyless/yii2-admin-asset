@@ -4,6 +4,7 @@ namespace ijony\admin\widgets;
 
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\bootstrap\ActiveField;
 use yii\bootstrap5\Html;
 
 /**
@@ -65,6 +66,7 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      * @see fieldConfig
      */
     public $fieldClass = 'ijony\admin\widgets\ActiveField';
+
     /**
      * @var array HTML attributes for the form tag. Default is `[]`.
      */
@@ -89,6 +91,9 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
 
         if ($this->layout !== 'default') {
             Html::addCssClass($this->options, 'form-' . $this->layout);
+        }
+        if (!isset($this->fieldConfig['class'])) {
+            $this->fieldConfig['class'] = 'ijony\admin\widgets\ActiveField';
         }
         parent::init();
     }
