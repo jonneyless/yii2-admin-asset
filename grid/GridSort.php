@@ -8,7 +8,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\jui\JuiAsset;
+use yii\jui\SortableAsset;
 use yii\web\View;
 
 class GridSort extends \yii\grid\GridView
@@ -60,7 +60,7 @@ $('#grid-sort').sortable({
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'grid-sort');
-        JuiAsset::register(Yii::$app->getView());
+        SortableAsset::register(Yii::$app->getView());
     }
 
     /**

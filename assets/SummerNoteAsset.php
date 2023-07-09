@@ -22,6 +22,6 @@ class SummerNoteAsset extends AssetBundle
         'js/plugins/summernote/summernote.zh-CN.min.js',
     ];
     public $depends = [
-        'yii\jui\JuiAsset',
+        'yii\jui\InputWidget',
     ];
 }
