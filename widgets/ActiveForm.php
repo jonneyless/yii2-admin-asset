@@ -4,7 +4,7 @@ namespace ijony\admin\widgets;
 
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
+use yii\web\Html;
 
 /**
  * A Bootstrap 3 enhanced version of [[\yii\widgets\ActiveForm]].
