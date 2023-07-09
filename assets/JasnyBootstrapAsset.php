@@ -17,6 +17,6 @@ class JasnyBootstrapAsset extends AssetBundle
         'js/plugins/jasny-bootstrap/jasny-bootstrap.min.js'
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap5\BootstrapPluginAsset',
     ];
 }

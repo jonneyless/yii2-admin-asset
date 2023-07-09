@@ -21,7 +21,7 @@ class AppAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap5\BootstrapPluginAsset',
         'ijony\admin\assets\AnimateCssAsset',
         'ijony\admin\assets\FontAwesomeAsset',
         'ijony\admin\assets\PaceAsset',

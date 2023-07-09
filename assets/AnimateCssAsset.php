@@ -14,6 +14,6 @@ class AnimateCssAsset extends AssetBundle
         'css/plugins/animate.css',
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap5\BootstrapPluginAsset',
     ];
 }

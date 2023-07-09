@@ -14,6 +14,6 @@ class AwesomeBootstrapCheckboxAsset extends AssetBundle
         'css/plugins/awesome-bootstrap-checkbox.css',
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap5\BootstrapPluginAsset',
     ];
 }
