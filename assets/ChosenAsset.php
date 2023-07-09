@@ -19,6 +19,6 @@ class ChosenAsset extends AssetBundle
         'js/plugins/chosen/chosen.jquery.min.js',
     ];
     public $depends = [
-        'yii\bootstrap5\BootstrapPluginAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 }

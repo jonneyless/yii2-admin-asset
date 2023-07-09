@@ -21,7 +21,7 @@ use yii\web\View;
  * Yii::$app->session->setFlash('error', ['Error 1', 'Error 2']);
  * ```
  */
-class Alert extends \yii\bootstrap5\Widget
+class Alert extends \yii\bootstrap\Widget
 {
 
     public $alertTypes = [
