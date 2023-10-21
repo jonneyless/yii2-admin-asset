@@ -9,15 +9,17 @@ use yii\web\AssetBundle;
  */
 class TagsinputAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $css = [
         'css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css',
         'css/fix/tagsinput.css',
     ];
+
     public $js = [
-        'js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js',
+        'js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js',
     ];
+
     public $depends = [
-        'ijony\admin\assets\TypeaheadAsset',
+        'admin\assets\TypeaheadAsset',
     ];
 }

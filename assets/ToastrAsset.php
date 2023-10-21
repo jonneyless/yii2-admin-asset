@@ -9,11 +9,12 @@ use yii\web\AssetBundle;
  */
 class ToastrAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $css = [
-        'css/plugins/toastr.min.css'
+        'css/plugins/toastr/toastr.min.css',
     ];
+
     public $js = [
-        'js/plugins/toastr.min.js'
+        'js/plugins/toastr/toastr.min.js',
     ];
 }

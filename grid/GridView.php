@@ -11,51 +11,59 @@ class GridView extends \yii\grid\GridView
 {
 
     public $pager = [
+        'pageCssClass' => 'paginate_button page-item',
+        'linkOptions' => [
+            'class' => 'page-link',
+        ],
         'prevPageLabel' => '<i class="fa fa-angle-left"></i>',
         'nextPageLabel' => '<i class="fa fa-angle-right"></i>',
         'firstPageLabel' => '<i class="fa fa-angle-double-left"></i>',
         'lastPageLabel' => '<i class="fa fa-angle-double-right"></i>',
     ];
-    public $layoutFix = false;
+
+    public $layoutFix = true;
+
     public $footable = false;
-    public $tableOptions = ['class' => 'table table-striped'];
+
+    public $tableOptions = ['class' => 'table'];
+
     public $layout = "{items}";
 
     public function run()
     {
-        if($this->footable){
-            if($this->tableOptions['class']){
+        if ($this->footable) {
+            if ($this->tableOptions['class']) {
                 $this->tableOptions['class'] .= ' table-footable';
-            }else{
+            } else {
                 $this->tableOptions['class'] = 'table-footable';
             }
         }
 
-        if($this->layoutFix){
-            if($this->tableOptions['class']){
+        if ($this->layoutFix) {
+            if ($this->tableOptions['class']) {
                 $this->tableOptions['class'] .= ' table-layout-fix';
-            }else{
+            } else {
                 $this->tableOptions['class'] = 'table-layout-fix';
             }
         }
 
         if (isset($this->options['class'])) {
-            $this->options['class'] .= ' ibox-content';
+            $this->options['class'] .= ' table-responsive';
         } else {
-            $this->options['class'] = 'ibox-content';
+            $this->options['class'] = 'table-responsive';
         }
 
         parent::run();
         $view = $this->getView();
 
-        if($pager = $this->renderPager()){
+        if ($pager = $this->renderPager()) {
             $view->params['footer']['left'] = $pager;
             $view->params['footer']['class'] = 'footer-fixed';
         }
 
         $view->params['footer']['right'] = $this->renderSummary();
 
-        if($this->footable){
+        if ($this->footable) {
             $js = <<<JS
 
 $('.table-footable').footable();
@@ -85,8 +93,6 @@ JS;
             $tableBody,
         ]);
 
-        $table = Html::tag('table', implode("\n", $content), $this->tableOptions);
-
-        return Html::tag('div', $table, ['class' => 'table-responsive']);
+        return Html::tag('table', implode("\n", $content), $this->tableOptions);
     }
 }

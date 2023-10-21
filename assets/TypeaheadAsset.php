@@ -9,13 +9,12 @@ use yii\web\AssetBundle;
  */
 class TypeaheadAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
-    public $css = [
-    ];
+
     public $js = [
-        'js/plugins/bootstrap3-typeahead.min.js',
+        'js/plugins/typehead/bootstrap3-typeahead.min.js',
     ];
+
     public $depends = [
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap4\BootstrapPluginAsset',
     ];
 }

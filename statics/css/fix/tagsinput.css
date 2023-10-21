@@ -1,8 +1,12 @@
 /* Tags Input Plugin */
-.bootstrap-tagsinput{
+.bootstrap-tagsinput {
     border: 1px solid #e5e6e7;
     box-shadow: none;
     width: 100%;
     height: auto;
     min-height: 34px;
+}
+
+.bootstrap-tagsinput input {
+    min-width: 200px;
 }

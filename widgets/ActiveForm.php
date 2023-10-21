@@ -4,8 +4,8 @@ namespace ijony\admin\widgets;
 
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\bootstrap\ActiveField;
-use yii\bootstrap5\Html;
+use yii\bootstrap4\ActiveField;
+use yii\bootstrap4\Html;
 
 /**
  * A Bootstrap 3 enhanced version of [[\yii\widgets\ActiveForm]].
@@ -59,7 +59,7 @@ use yii\bootstrap5\Html;
  * @author Michael Härtl <haertl.mike@gmail.com>
  * @since 2.0
  */
-class ActiveForm extends \yii\bootstrap\ActiveForm
+class ActiveForm extends \yii\bootstrap4\ActiveForm
 {
     /**
      * @var string the default field class name when calling [[field()]] to create a new field.
@@ -76,7 +76,7 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      * By choosing a layout, an appropriate default field configuration is applied. This will
      * render the form fields with slightly different markup for each layout. You can
      * override these defaults through [[fieldConfig]].
-     * @see \yii\bootstrap\ActiveField for details on Bootstrap 3 field configuration
+     * @see \yii\bootstrap4\ActiveField for details on Bootstrap 3 field configuration
      */
     public $layout = 'default';
 
@@ -102,7 +102,7 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      * {@inheritdoc}
      * @return ActiveField the created ActiveField object
      */
-    public function field($model, $attribute, $options = [])
+    public function field($model, $attribute, $options = []): ActiveField
     {
         return parent::field($model, $attribute, $options);
     }

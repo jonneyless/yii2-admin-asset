@@ -68,7 +68,6 @@
 namespace ijony\admin\grid;
 
 use Yii;
-use yii\helpers\Html;
 use yii\web\View;
 use ijony\admin\assets\GridViewEditableAsset;
 
@@ -101,7 +100,7 @@ class GridViewEditable extends GridView
         $this->registerAssets();
 
         $view = $this->getView();
-        $od = \json_encode($this->otherPostData);
+        $od = json_encode($this->otherPostData);
         $ik = ($this->includeKey) ? 'true' : 'false';
 
         $js1 = " var gdv_{$this->id} = new editableGridview('gdv_{$this->id}'); ";

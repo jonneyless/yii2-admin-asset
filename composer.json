@@ -22,10 +22,11 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.4.0",
-        "yiisoft/yii2": ">=2.0.6",
+        "php": ">=7.4.0",
+        "ext-json": "*",
+        "yiisoft/yii2": "~2.0.45",
         "yiisoft/yii2-jui": "^2.0",
-        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-bootstrap4": "~2.0.2",
         "jonneyless/yii2-helper-extend": "dev-master"
     },
     "autoload": {
@@ -37,7 +38,13 @@
         "bootstrap": "ijony\\admin\\Bootstrap"
     },
     "config": {
-        "process-timeout": 1800
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        },
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
     },
     "repositories": [
         {
@@ -45,8 +52,8 @@
             "url": "https://asset-packagist.org"
         },
         {
-            "url": "ssh://git@gitlab.corp.qoo-app.com:2215/server/yii2-helper-extend.git",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/jonneyless/yii2-helper-extend.git"
         }
     ]
 }

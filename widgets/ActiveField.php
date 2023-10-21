@@ -2,18 +2,19 @@
 
 namespace ijony\admin\widgets;
 
+use ijony\admin\assets\BootstrapCustomFileInputAsset;
 use ijony\admin\assets\ChosenAsset;
 use ijony\admin\assets\DatepickerAsset;
 use ijony\admin\assets\AwesomeBootstrapCheckboxAsset;
 use ijony\admin\assets\DatetimepickerAsset;
-use ijony\admin\assets\JasnyBootstrapAsset;
 use ijony\admin\assets\MediumEditorAsset;
 use ijony\admin\assets\SummerNoteAsset;
 use ijony\admin\assets\SwitcheryAsset;
 use ijony\admin\assets\TagsinputAsset;
 use ijony\helpers\Image;
 use Yii;
-use yii\bootstrap5\Html;
+use yii\base\Model;
+use yii\bootstrap4\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -23,9 +24,9 @@ use yii\web\View;
  * 动态表单重构类
  *
  * @inheritdoc
- * @package common\widgets
+ * @package admin\widgets
  */
-class ActiveField extends \yii\bootstrap\ActiveField
+class ActiveField extends \yii\bootstrap4\ActiveField
 {
 
     /**
@@ -36,19 +37,27 @@ class ActiveField extends \yii\bootstrap\ActiveField
     /**
      * @inheritdoc
      */
-    public $checkboxTemplate = "<div class=\"checkbox\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
+    public $checkTemplate = "<div class=\"checkbox\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
+
     /**
      * @inheritdoc
      */
     public $radioTemplate = "<div class=\"radio\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n{error}\n{hint}\n</div>";
+
     /**
      * @inheritdoc
      */
-    public $horizontalCheckboxTemplate = "{beginWrapper}\n<div class=\"checkbox\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n</div>\n{error}\n{endWrapper}\n{hint}";
+    public $checkHorizontalTemplate = "{beginWrapper}\n<div class=\"checkbox\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n</div>\n{error}\n{endWrapper}\n{hint}";
+
     /**
      * @inheritdoc
      */
-    public $horizontalRadioTemplate = "{beginWrapper}\n<div class=\"radio\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n</div>\n{error}\n{endWrapper}\n{hint}";
+    public $radioHorizontalTemplate = "{beginWrapper}\n<div class=\"radio\">\n{input}\n{beginLabel}\n{labelTitle}\n{endLabel}\n</div>\n{error}\n{endWrapper}\n{hint}";
+
+    /**
+     * @var Model the data model that this field is associated with.
+     */
+    public $model;
 
     /**
      * @inheritdoc
@@ -61,6 +70,76 @@ class ActiveField extends \yii\bootstrap\ActiveField
     }
 
     /**
+     * @param $options
+     *
+     * @return $this|\ijony\admin\widgets\ActiveField
+     */
+    public function textInput($options = [])
+    {
+        $prefix = $suffix = '';
+        if (isset($options['prefix'])) {
+            $prefix = $options['prefix'];
+            unset($options['prefix']);
+        }
+
+        if (isset($options['suffix'])) {
+            $suffix = $options['suffix'];
+            unset($options['suffix']);
+        }
+
+        parent::textInput($options);
+
+        $this->parts['{input}'] = Html::tag(
+            'div',
+            $prefix . $this->parts['{input}'] . $suffix,
+            ['class' => 'input-group']
+        );
+
+        return $this;
+    }
+
+    /**
+     * 带前缀文本框
+     *
+     * @param       $prefix
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function textInputWithPrefix($prefix = null, $options = [])
+    {
+        if (!$prefix) {
+            return $this->textInput($options);
+        }
+
+        $value = Html::getAttributeValue($this->model, $this->attribute);
+        $options = array_merge($this->inputOptions, $options);
+        $options['value'] = str_replace($prefix, '', $value);
+
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($options);
+        }
+
+        $this->adjustLabelFor($options);
+        $this->parts['{input}'] = Html::tag(
+            'div',
+            Html::tag(
+                'div',
+                $prefix,
+                [
+                    'class' => 'input-group-addon bg-muted prefix',
+                ]
+            ) .
+            Html::activeTextInput($this->model, $this->attribute, $options),
+            [
+                'class' => 'input-group',
+            ]
+        );
+
+        return $this;
+    }
+
+    /**
      * 带单位文本框
      *
      * @param       $unit
@@ -70,11 +149,16 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function textUnitInput($unit, $options = [])
     {
-        if(!$unit){
+        if (!$unit) {
             return $this->textInput($options);
         }
 
         $options = array_merge($this->inputOptions, $options);
+
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($options);
+        }
+
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::tag(
             'div',
@@ -83,11 +167,11 @@ class ActiveField extends \yii\bootstrap\ActiveField
                 'div',
                 $unit,
                 [
-                    'class' => 'input-group-addon'
+                    'class' => 'input-group-addon',
                 ]
             ),
             [
-                'class' => 'input-group'
+                'class' => 'input-group',
             ]
         );
 
@@ -104,13 +188,13 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function textButtonInput($buttonText, $options = [])
     {
-        if(!$buttonText){
+        if (!$buttonText) {
             return $this->textInput($options);
         }
 
         $buttonOptions = ['class' => 'btn btn-default'];
 
-        if(isset($options['buttonOptions'])){
+        if (isset($options['buttonOptions'])) {
             $buttonOptions = array_merge($buttonOptions, $options['buttonOptions']);
             unset($options['buttonOptions']);
         }
@@ -140,6 +224,11 @@ class ActiveField extends \yii\bootstrap\ActiveField
         }
 
         $options = array_merge($this->inputOptions, $options);
+
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($options);
+        }
+
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::tag(
             'div',
@@ -148,11 +237,11 @@ class ActiveField extends \yii\bootstrap\ActiveField
                 'div',
                 join("\n", $buttons),
                 [
-                    'class' => 'input-group-btn'
+                    'class' => 'input-group-btn',
                 ]
             ),
             [
-                'class' => 'input-group'
+                'class' => 'input-group',
             ]
         );
 
@@ -166,31 +255,33 @@ class ActiveField extends \yii\bootstrap\ActiveField
      *
      * @return $this
      */
-    public function file($options = [])
+    public function file(array $options = [])
     {
-        $inputName = Html::getInputName($this->model, $this->attribute);
+        $inputId = Html::getInputId($this->model, $this->attribute);
 
-        if (isset($options['name'])) {
-            $inputName = $options['name'];
-            unset($options['name']);
+        $options['class'] = isset($options['class']) ? $options['class'] . ' custom-file-input' : 'custom-file-input';
+
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($options);
         }
 
+        $input = Html::activeFileInput($this->model, $this->attribute, $options);
+
         $this->parts['{input}'] = <<<HTML
-<div class="fileinput fileinput-new input-group" data-provides="fileinput">
-    <div class="form-control" data-trigger="fileinput">
-        <i class="glyphicon glyphicon-file fileinput-exists"></i>
-        <span class="fileinput-filename"></span>
-    </div>
-    <span class="input-group-addon btn btn-default btn-file">
-        <span class="fileinput-new">选择文件</span>
-        <span class="fileinput-exists">更换</span>
-        <input type="file" name="$inputName"/>
-    </span>
-    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">移除</a>
-</div>
+ <div class="input-group">
+     <div class="custom-file">
+         $input
+         <label class="custom-file-label" for="$inputId">选择文件</label>
+     </div>
+ </div>
 HTML;
 
-        JasnyBootstrapAsset::register(Yii::$app->getView());
+        $js = <<<JS
+bsCustomFileInput.init();
+JS;
+
+        Yii::$app->view->registerJs($js, View::POS_READY, 'file-upload');
+        BootstrapCustomFileInputAsset::register(Yii::$app->getView());
 
         return $this;
     }
@@ -230,7 +321,7 @@ HTML;
             unset($options['responsive']);
         }
 
-        $preview = Image::getImg($inputValue, 300);
+        $preview = Image::getImg($inputValue);
 
         $imageOptions = [
             'data-default' => $preview,
@@ -243,12 +334,12 @@ HTML;
 
         $data = Html::img($preview, $imageOptions);
 
-        if(isset($options['width'])){
+        if (isset($options['width'])) {
             $minWidth = $options['width'];
             unset($options['width']);
         }
 
-        if(isset($options['height'])){
+        if (isset($options['height'])) {
             $minHeight = $options['height'];
             unset($options['height']);
         }
@@ -257,7 +348,7 @@ HTML;
             $options['id'] = $inputId;
         }
 
-        if($minWidth && $minHeight){
+        if ($minWidth && $minHeight) {
             $scale = $minWidth / $minHeight;
         }
 
@@ -269,7 +360,6 @@ HTML;
         } else {
             $this->parts['{input}'] = Html::tag('div', $data, ['class' => 'image-upload']);
         }
-
 
         $js = <<<JS
 
@@ -291,17 +381,17 @@ $(document).on('change', '.image-upload-input', function(){
     
     previewImg.attr('src', previewImg.attr('data-default'));
     
-    if(fileExt != '.jpg' && fileExt != '.jpeg' && fileExt != '.png' && fileExt != '.gif'){
+    if(fileExt !== '.jpg' && fileExt !== '.jpeg' && fileExt !== '.png' && fileExt !== '.gif'){
         toastr('error', '图片格式不对，只能上传 jpg、png 和 gif 格式！');
         fileInput.after(newFileInput).remove();
         return;
     }
     
-    if(window.createObjectURL != undefined){
+    if(window.createObjectURL !== undefined){
         imgUrl = window.createObjectURL(objUrl) ;
-    }else if (window.URL != undefined){
+    }else if (window.URL !== undefined){
         imgUrl = window.URL.createObjectURL(objUrl) ;
-    }else if (window.webkitURL != undefined){
+    }else if (window.webkitURL !== undefined){
         imgUrl = window.webkitURL.createObjectURL(objUrl) ;
     }
     
@@ -314,19 +404,19 @@ $(document).on('change', '.image-upload-input', function(){
             var scale = width/height;
             var filesize = img;
             
-            if(minWidth > 0 && minHeight == 0 && minWidth != width){
+            if(minWidth > 0 && minHeight === 0 && minWidth !== width){
                 toastr.error(label + '宽度要求为' + minWidth + 'px！');
                 fileInput.after(newFileInput).remove();
                 return;
             }
             
-            if(minHeight > 0 && minWidth == 0 && minHeight != height){
+            if(minHeight > 0 && minWidth === 0 && minHeight !== height){
                 toastr.error(label + '高度要求为' + minWidth + 'px！');
                 fileInput.after(newFileInput).remove();
                 return;
             }
             
-            if(minWidth > 0 && minHeight > 0 && minWidth != width && minHeight != height && (oScale + 0.01 < scale || oScale - 0.01 > scale)){
+            if(minWidth > 0 && minHeight > 0 && minWidth !== width && minHeight !== height && (oScale + 0.01 < scale || oScale - 0.01 > scale)){
                 toastr.error(label + '尺寸为 ' + minWidth + '*' + minHeight + ' px 或同比例的其他尺寸！');
                 fileInput.after(newFileInput).remove();
                 return;
@@ -336,10 +426,9 @@ $(document).on('change', '.image-upload-input', function(){
             previewImg.attr('src', imgUrl);
         };
         
-        img.onerror=function(){  
+        img.onerror = function(){  
             toastr.error(label + '上传失败！');
             fileInput.after(newFileInput).remove();
-            return;
         };
         
         img.src = imgUrl;
@@ -361,50 +450,49 @@ JS;
      *
      * @return $this
      */
-    public function select($options = [])
+    public function select(array $options = [])
     {
-        $model = $this->model;
-        $model = $model::className();
+        $idField = $this->model->getIdField();
+        $idField = current($idField);
+
         $inputName = Html::getInputName($this->model, $this->attribute);
         $valueId = Html::getAttributeValue($this->model, $this->attribute);
 
-        if(isset($options['class'])){
+        if (isset($options['class'])) {
             $model = $options['class'];
-            $modelData = $model::findOne($valueId);
+            $modelData = $model::findOne([$idField => $valueId]);
             $ids = [0];
-            if($modelData){
+            if ($modelData) {
                 $ids = $modelData->getParentIds();
             }
             $exclude = 0;
-        }else{
-            $primaryKey = $model::primaryKey();
-            $primaryKey = current($primaryKey);
+        } else {
             $ids = $this->model->getParentIds();
-            $exclude = $this->model->$primaryKey ? $this->model->$primaryKey : 0;
+            $exclude = $this->model->$idField ? : 0;
         }
 
         $selects = [];
 
-        foreach($ids as $index => $parentId){
+        foreach ($ids as $index => $parentId) {
             $id = 0;
-            if(isset($ids[$index + 1])){
+            if (isset($ids[$index + 1])) {
                 $id = $ids[$index + 1];
-            }else{
+            } else {
                 $id = $valueId;
             }
 
-            $datas = $model::getSelectData($parentId, $exclude);
-            if($datas){
+            $data = $this->model::getSelectData($parentId, $exclude);
+            if ($data) {
                 $params = [
                     'class' => 'form-control form-control-inline',
-                    'ajax-select' => Url::to(['ajax/select', 'model' => $model, 'input' => $inputName, 'exclude' => $exclude]),
+                    'ajax-select' => Url::to(['/ajax/select', 'model' => $this->model::className(), 'input' => $inputName, 'exclude' => $exclude]),
                 ];
 
-                $selects[] = Html::dropDownList($inputName, $id, $datas, $params);
+                $selects[] = Html::dropDownList($inputName, $id, $data, $params);
             }
         }
 
-        if(!$selects){
+        if (!$selects) {
             $selects[] = Html::dropDownList($inputName, '', [], [
                 'class' => 'form-control form-control-inline',
                 'prompt' => '请选择',
@@ -423,13 +511,13 @@ $(document).on('change', 'select[ajax-select]', function(){
     
     select.nextAll('select').remove();
     
-    if(parent_id == $(this).children('option').eq(0).val()){
+    if(parent_id === $(this).children('option').eq(0).val()){
         return false;
     }
     
-    $.post(url, {parent_id: parent_id}, function(datas){
-        if(datas.html){
-            select.after(datas.html);
+    $.post(url, {parent_id: parent_id}, function(req){
+        if(req.data.html){
+            select.after(req.data.html);
         }
     }, 'json');
 });
@@ -464,16 +552,16 @@ JS;
 
         $template = '%s &nbsp; 到 &nbsp; %s';
 
-        if($this->form->layout == 'default'){
+        if ($this->form->layout == 'default') {
             $template = '<div>%s &nbsp; 到 &nbsp; %s</div>';
         }
 
-        if(isset($options['template'])){
+        if (isset($options['template'])) {
             $template = $options['template'];
             unset($options['template']);
         }
 
-        if(!isset($options['class'])){
+        if (!isset($options['class'])) {
             $options['class'] = 'form-control form-control-inline';
         }
 
@@ -502,24 +590,24 @@ JS;
     {
         $hasTime = true;
 
-        if(isset($options['has_time'])){
+        if (isset($options['has_time'])) {
             $hasTime = $options['has_time'];
             unset($options['has_time']);
         }
 
-        if($hasTime){
-            $dateTemplate = "Y-m-d H:i:ss";
-        }else{
-            $dateTemplate = "Y-m-d";
+        if ($hasTime) {
+            $format = Yii::$app->formatter->datetimeFormat;
+        } else {
+            $format = Yii::$app->formatter->dateFormat;
         }
 
-        $startDate = date('Y-m-d', 0);
+        $startDate = Yii::$app->formatter->asDate(0);
         if (isset($options['startDate'])) {
             $startDate = $options['startDate'];
             unset($options['startDate']);
         }
 
-        $endDate = date('Y-m-d', 2133999048);
+        $endDate = Yii::$app->formatter->asDate(2133999048);
         if (isset($options['endDate'])) {
             $endDate = $options['endDate'];
             unset($options['endDate']);
@@ -534,16 +622,20 @@ JS;
         $beginValue = Html::getAttributeValue($this->model, $this->attribute);
         $endValue = Html::getAttributeValue($this->model, $endAttr);
 
-        if(!$beginValue){
+        if (!$beginValue) {
             $beginValue = '';
-        }else{
-            $beginValue = is_integer($beginValue) ? date($dateTemplate, $beginValue) : $beginValue;
+        } else {
+            if (is_integer($beginValue)) {
+                $beginValue = $hasTime ? Yii::$app->formatter->asDatetime($beginValue) : Yii::$app->formatter->asDate($beginValue);
+            }
         }
 
-        if(!$endValue){
+        if (!$endValue) {
             $endValue = '';
-        }else{
-            $endValue = is_integer($endValue) ? date($dateTemplate, $endValue) : $endValue;
+        } else {
+            if (is_integer($endValue)) {
+                $endValue = $hasTime ? Yii::$app->formatter->asDatetime($endValue) : Yii::$app->formatter->asDate($endValue);
+            }
         }
 
         if ($hasTime) {
@@ -552,7 +644,7 @@ JS;
             $template = '<div class="datepicker-box"><div class="input-daterange input-group">%s<span class="input-group-addon">到</span>%s</div></div>';
         }
 
-        if(!isset($options['class'])){
+        if (!isset($options['class'])) {
             $options['class'] = 'form-control';
         }
 
@@ -568,11 +660,13 @@ JS;
 
         $language = Yii::$app->language;
 
+        $format = Yii::$app->formatter->formatForPicker($format);
+
         if ($hasTime) {
             $js = <<<JS
 
 $('.datetimepicker-box .input-daterange input').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
+    format: '$format',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
@@ -591,7 +685,7 @@ JS;
             $js = <<<JS
         
 $('.datepicker-box .input-daterange').datepicker({
-    format: 'yyyy-mm-dd',
+    format: '$format',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
@@ -616,29 +710,23 @@ JS;
      * @param array $options
      *
      * @return $this
+     * @throws \yii\base\InvalidConfigException
      */
     public function datetime($options = [])
     {
-        $dateTemplate = "Y-m-d H:i:s";
-        $pickerTemplate = "yyyy-mm-dd hh:ii:ss";
-
-        if(isset($options['dateTemplate'])){
-            $dateTemplate = $options['dateTemplate'];
-            unset($options['dateTemplate']);
+        $format = Yii::$app->formatter->datetimeFormat;
+        if (isset($options['format'])) {
+            $format = $options['format'];
+            unset($options['format']);
         }
 
-        if(isset($options['pickerTemplate'])){
-            $pickerTemplate = $options['pickerTemplate'];
-            unset($options['pickerTemplate']);
-        }
-
-        $startDate = date('Y-m-d', 0);
+        $startDate = Yii::$app->formatter->asDate(0);
         if (isset($options['startDate'])) {
             $startDate = $options['startDate'];
             unset($options['startDate']);
         }
 
-        $endDate = date('Y-m-d', 2133999048);
+        $endDate = Yii::$app->formatter->asDate(2133999048);
         if (isset($options['endDate'])) {
             $endDate = $options['endDate'];
             unset($options['endDate']);
@@ -648,15 +736,15 @@ JS;
         $inputName = Html::getInputName($this->model, $this->attribute);
         $inputValue = Html::getAttributeValue($this->model, $this->attribute);
 
-        if(!$inputValue){
+        if (!$inputValue) {
             $inputValue = '';
-        }else{
-            $inputValue = is_integer($inputValue) ? date($dateTemplate, $inputValue) : $inputValue;
+        } else {
+            $inputValue = is_integer($inputValue) ? Yii::$app->formatter->asDatetime($inputValue, $format) : $inputValue;
         }
 
-        $inputValue = substr($inputValue, 0, strlen($pickerTemplate));
+        $inputValue = substr($inputValue, 0, strlen($format));
 
-        if(!isset($options['class'])){
+        if (!isset($options['class'])) {
             $options['class'] = 'form-control';
         }
 
@@ -682,20 +770,22 @@ JS;
                     ]
                 ),
                 [
-                    'class' => 'input-group-btn',
+                    'class' => 'input-group-append',
                 ]
             ),
             [
-                'class' => 'input-group datetime'
+                'class' => 'input-group datetime',
             ]
         );
 
         $language = Yii::$app->language;
 
+        $format = Yii::$app->formatter->formatForPicker($format);
+
         $js = <<<JS
         
 $('#$inputId').datetimepicker({
-    format: '$pickerTemplate',
+    format: '$format',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
@@ -723,17 +813,10 @@ JS;
      */
     public function date($options = [])
     {
-        $dateTemplate = "Y-m-d";
-        $pickerTemplate = "yyyy-mm-dd";
-
-        if(isset($options['dateTemplate'])){
-            $dateTemplate = $options['dateTemplate'];
-            unset($options['dateTemplate']);
-        }
-
-        if(isset($options['pickerTemplate'])){
-            $pickerTemplate = $options['pickerTemplate'];
-            unset($options['pickerTemplate']);
+        $format = Yii::$app->formatter->datetimeFormat;
+        if (isset($options['format'])) {
+            $format = $options['format'];
+            unset($options['format']);
         }
 
         $startDateTemplate = 'Y-m-d';
@@ -747,13 +830,13 @@ JS;
             }
         }
 
-        $startDate = date($startDateTemplate, 0);
+        $startDate = Yii::$app->formatter->asDate(0);
         if (isset($options['startDate'])) {
             $startDate = $options['startDate'];
             unset($options['startDate']);
         }
 
-        $endDate = date($startDateTemplate, 2133999048);
+        $endDate = Yii::$app->formatter->asDate(2133999048);
         if (isset($options['endDate'])) {
             $endDate = $options['endDate'];
             unset($options['endDate']);
@@ -763,15 +846,15 @@ JS;
         $inputName = Html::getInputName($this->model, $this->attribute);
         $inputValue = Html::getAttributeValue($this->model, $this->attribute);
 
-        if(!$inputValue){
+        if (!$inputValue) {
             $inputValue = '';
-        }else{
-            $inputValue = is_integer($inputValue) ? date($dateTemplate, $inputValue) : $inputValue;
+        } else {
+            $inputValue = is_integer($inputValue) ? Yii::$app->formatter->asDate($inputValue, $format) : $inputValue;
         }
 
-        $inputValue = substr($inputValue, 0, strlen($pickerTemplate));
+        $inputValue = substr($inputValue, 0, strlen($format));
 
-        if(!isset($options['class'])){
+        if (!isset($options['class'])) {
             $options['class'] = 'form-control';
         }
 
@@ -796,16 +879,18 @@ JS;
                 ]
             ),
             [
-                'class' => 'input-group date'
+                'class' => 'input-group date',
             ]
         );
 
         $language = Yii::$app->language;
 
+        $format = Yii::$app->formatter->formatForPicker($format);
+
         $js = <<<JS
         
 $('#$inputId').datepicker({
-    format: '$pickerTemplate',
+    format: '$format',
     autoclose: true,
     todayHighlight: true,
     toggleActive: true,
@@ -815,7 +900,7 @@ $('#$inputId').datepicker({
     startDate: '$startDate',
     endDate: '$endDate',
     minViewMode: $minViewMode
-});
+})
 
 JS;
 
@@ -834,17 +919,36 @@ JS;
      */
     public function editor($options = [])
     {
-        if(!isset($options['class'])){
+        if (!isset($options['class'])) {
             $options['class'] = 'is-editor';
-        }else{
+        } else {
             $options['class'] .= ' is-editor';
         }
 
         $height = 400;
 
-        if(isset($options['height'])){
+        if (isset($options['height'])) {
             $height = $options['height'];
             unset($options['height']);
+        }
+
+        $config = [
+            'lang' => Yii::$app->language,
+            'height' => $height,
+            'toolbar' => [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture', 'video', 'emoji']],
+                ['misc', ['fullscreen', 'codeview']],
+            ],
+        ];
+
+        if (isset($options['toolbar'])) {
+            $config['toolbar'] = $options['toolbar'];
+            unset($options['toolbar']);
         }
 
         $options = array_merge($this->inputOptions, $options);
@@ -852,24 +956,10 @@ JS;
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeTextarea($this->model, $this->attribute, $options);
 
-        $language = Yii::$app->language;
+        $config = json_encode($config, JSON_PRETTY_PRINT);
 
         $js = <<<JS
-        
-$('.is-editor').summernote({
-    lang: '$language',
-    height: $height,
-    toolbar: [
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['insert', ['link', 'picture', 'video', 'emoji']],
-        ['misc', ['fullscreen', 'codeview']],
-    ]
-});
-
+$('.is-editor').summernote($config);
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'summernote');
@@ -909,13 +999,13 @@ JS;
         }
 
         if (!isset($options['data-placeholder'])) {
-            $options['data-placeholder'] = "请输入...";
+            $options['data-placeholder'] = " ";
         }
 
         $editorOptions = [
             'toolbar' => [
                 'allowMultiParagraphSelection' => true,
-                'buttons' => ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'],
+                'buttons' => [],
                 'diffLeft' => 0,
                 'diffTop' => -10,
                 'firstButtonClass' => 'medium-editor-button-first',
@@ -929,15 +1019,33 @@ JS;
             ],
             'paste' => [
                 'forcePlainText' => true,
+                'cleanPastedHTML' => true,
             ],
         ];
 
-        if (isset($options['editor-opitons'])) {
-            $editorOptions = ArrayHelper::merge($editorOptions, $options['editor-opitons']);
-            unset($options['editor-opitons']);
+        if (isset($options['editor-options'])) {
+            $editorOptions = ArrayHelper::merge($editorOptions, $options['editor-options']);
+            unset($options['editor-options']);
+        }
+
+        $editorOptions['toolbar']['buttons'] = $editorOptions['toolbar']['buttons'] ?? ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3'];
+
+        $extensions = [];
+        if (isset($editorOptions['extensions'])) {
+            $extensions = $editorOptions['extensions'];
+            unset($editorOptions['extensions']);
+            $editorOptions['extensions'] = new \stdClass();
         }
 
         $editorOptions = Json::encode($editorOptions);
+
+        if ($extensions) {
+            $extensionJson = [];
+            foreach ($extensions as $button => $params) {
+                $extensionJson[] = '"' . $button . '": new MediumButton(' . $params . ')';
+            }
+            $editorOptions = str_replace('"extensions":{}', '"extensions":{' . join(',', $extensionJson) . '}', $editorOptions);
+        }
 
         $options = array_merge($this->inputOptions, $options);
         $options['contenteditable'] = true;
@@ -947,11 +1055,11 @@ JS;
 
         $js = <<<JS
         
-var editor = new MediumEditor('.is-tiny-editor', $editorOptions);
+var editor = new MediumEditor('.is-tiny-editor', $editorOptions)
 
 $('.is-tiny-editor').closest('form').submit(function(){
     $('.is-tiny-editor').each(function(index, obj){
-        $('.is-tiny-editor').eq(index).next('input').val($('.is-tiny-editor').eq(index).html());
+        $(obj).next('input').val($(obj).html());
     });
     
     return true;
@@ -974,19 +1082,39 @@ JS;
      */
     public function chosen($items, $options = [])
     {
-        $inputId = Html::getInputId($this->model, $this->attribute);
+        $inputId = $options['id'] ?? Html::getInputId($this->model, $this->attribute);
 
         $class = "form-control chosen-select";
 
-        if(isset($options['class'])){
-            $class .= $options['class'];
+        if (isset($options['class'])) {
+            $class .= " " . $options['class'];
         }
 
         $options['class'] = $class;
-        $options['prompt'] = '请选择';
-        $options['data-placeholder'] = '请选择';
+        $options['data-placeholder'] = $options['data-placeholder'] ?? '请选择';
+
+        $selectAll = '';
+        if (isset($options['select_all'])) {
+            $selectAll = $options['select_all'];
+            unset($options['select_all']);
+            $inputValue = Html::getAttributeValue($this->model, $this->attribute);
+            if (is_array($inputValue)) {
+                $inputValue = current($inputValue);
+            }
+            if ($inputValue === $selectAll) {
+                $options['options'] = [];
+                foreach ($items as $key => $item) {
+                    $options['options'][$key]['disabled'] = $key !== $selectAll;
+                }
+            }
+        }
 
         $options = array_merge($this->inputOptions, $options);
+
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($options);
+        }
+
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
         $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
@@ -999,6 +1127,25 @@ $('#$inputId').chosen({
 });
 
 JS;
+
+        if ($selectAll) {
+            $js .= <<<JS
+$('#$inputId').change(function() {
+  let allVal = '$selectAll';
+  let vals = $(this).val();
+  
+  $('#$inputId').find('option').prop('disabled', false);
+  if ($.inArray(allVal, vals) > -1) {
+    $('#$inputId').find('option').prop('selected', false);
+    $('#$inputId').find('option').prop('disabled', true);
+    $('#$inputId').find('option[value="$selectAll"]').prop('selected', true);
+    $('#$inputId').find('option[value="$selectAll"]').prop('disabled', false);
+  }
+  
+  $('#$inputId').trigger('chosen:updated');
+});
+JS;
+        }
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'chosen_' . $inputId);
         ChosenAsset::register(Yii::$app->getView());
@@ -1023,7 +1170,7 @@ JS;
         $this->addAriaAttributes($options);
         $this->adjustLabelFor($options);
 
-        if($source){
+        if ($source) {
             $ids = Html::getAttributeValue($this->model, $this->attribute);
 
             if (!$ids) {
@@ -1075,20 +1222,26 @@ $('#{$inputId}-tigger').typeahead({
         );
         return '';
     }
-});
+})
 
 $(document).on('click', '.bootstrap-tagsinput .tag', function(){
     $(this).remove();
 });
 JS;
-
-        }else{
+        } else {
+            $value = Html::getAttributeValue($this->model, $this->attribute);
+            if (is_array($value)) {
+                $value = join(',', $value);
+            }
+            $options['value'] = $value;
             $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
 
             $js = <<<JS
 
 $('#$inputId').tagsinput({
-    tagClass: 'tags label label-primary'
+    tagClass: 'tags label label-primary',
+    trimValue: true,
+    confirmKeys: [32]
 });
 
 JS;
@@ -1106,7 +1259,7 @@ JS;
      *
      * @return $this
      */
-    public function switchery($enableValue = 1, $options = [])
+    public function switchery($enableValue = StatusEnum::STATUS_ACTIVE, $options = [])
     {
         $disabled = false;
         $color = '#1AB394';
@@ -1133,7 +1286,7 @@ JS;
         $options['label'] = false;
 
         if (!$enableValue) {
-            $enableValue = 1;
+            $enableValue = StatusEnum::STATUS_ACTIVE;
         }
 
         if (is_array($enableValue)) {
@@ -1194,37 +1347,36 @@ JS;
         $inline = $this->inline;
         $inputId = Html::getInputId($this->model, $this->attribute);
 
-        if ($this->inline) {
-            if (!isset($options['class'])) {
-                $options['class'] = 'checkbox-group';
-            }
-        }
-
         if (!isset($options['item'])) {
             $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
             $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
                 $inputId = $inputId . '-' . $index;
-                $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
+                $options = array_merge(['value' => $value, 'id' => $inputId, 'class' => 'form-check-input'], $itemOptions);
 
-                if($checked){
+                if ($checked) {
                     $options['checked'] = $checked;
                 }
 
-                $wapperClass[] = 'checkbox';
-                if(isset($itemOptions['wapperClass'])){
-                    $wapperClass[] = $itemOptions['wapperClass'];
-                    unset($itemOptions['wapperClass']);
+                $wrapperClass[] = 'form-check abc-checkbox';
+                if (isset($itemOptions['wrapperClass'])) {
+                    $wrapperClass[] = $itemOptions['wrapperClass'];
+                    unset($itemOptions['wrapperClass']);
                 }
 
-                if($inline){
-                    $wapperClass[] = 'checkbox-inline';
+                if ($inline) {
+                    $wrapperClass[] = 'form-check-inline';
                 }
 
-                return '<div class="' . join(" ", $wapperClass) . '">' . Html::input('checkbox', $name, $value, $options) . Html::label($label, $inputId) . '</div>';
+                return '<div class="' . join(" ", $wrapperClass) . '">' . Html::input('checkbox', $name, $value, $options) . Html::label($label, $inputId, ['class' => 'form-check-label']) . '</div>';
             };
         }
 
+        if ($inline) {
+            $options['class'] = 'form-inline ' . ($options['class'] ?? '');
+        }
+
         parent::checkboxList($items, $options);
+
         return $this;
     }
 
@@ -1236,37 +1388,36 @@ JS;
         $inline = $this->inline;
         $inputId = Html::getInputId($this->model, $this->attribute);
 
-        if ($this->inline) {
-            if (!isset($options['class'])) {
-                $options['class'] = 'radio-group';
-            }
-        }
-
         if (!isset($options['item'])) {
             $itemOptions = isset($options['itemOptions']) ? $options['itemOptions'] : [];
             $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $inputId, $inline) {
                 $inputId = $inputId . '-' . $index;
-                $options = array_merge(['value' => $value, 'id' => $inputId], $itemOptions);
+                $options = array_merge(['value' => $value, 'id' => $inputId, 'class' => 'form-check-input'], $itemOptions);
 
-                if($checked){
+                if ($checked) {
                     $options['checked'] = $checked;
                 }
 
-                $wapperClass[] = 'radio';
-                if(isset($itemOptions['wapperClass'])){
-                    $wapperClass[] = $itemOptions['wapperClass'];
-                    unset($itemOptions['wapperClass']);
+                $wrapperClass[] = 'form-check abc-radio';
+                if (isset($itemOptions['wrapperClass'])) {
+                    $wrapperClass[] = $itemOptions['wrapperClass'];
+                    unset($itemOptions['wrapperClass']);
                 }
 
-                if($inline){
-                    $wapperClass[] = 'radio-inline';
+                if ($inline) {
+                    $wrapperClass[] = 'form-check-inline';
                 }
 
-                return '<div class="' . join(" ", $wapperClass) . '">' . Html::input('radio', $name, $value, $options) . Html::label($label, $inputId) . '</div>';
+                return '<div class="' . join(" ", $wrapperClass) . '">' . Html::input('radio', $name, $value, $options) . Html::label($label, $inputId, ['class' => 'form-check-label']) . '</div>';
             };
         }
 
+        if ($inline) {
+            $options['class'] = 'form-inline ' . ($options['class'] ?? '');
+        }
+
         parent::radioList($items, $options);
+
         return $this;
     }
 }

@@ -9,8 +9,12 @@ use yii\web\AssetBundle;
  */
 class MetisMenuAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $js = [
-        'js/plugins/jquery.metisMenu.min.js'
+        'js/plugins/metisMenu/jquery.metisMenu.js',
+    ];
+
+    public $depends = [
+        'admin\assets\AppAsset',
     ];
 }

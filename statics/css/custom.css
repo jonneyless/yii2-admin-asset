@@ -2,6 +2,10 @@
     display: none;
 }
 
+.require-icon {
+    color: #ed5565;
+}
+
 .dropdown-messages li em,
 .dropdown-alerts li em {
     font-size: 12px;
@@ -24,7 +28,7 @@
 }
 
 .middle-box h1 {
-    font-size: 145px;
+    font-size: 108px;
 }
 
 .logo-element {
@@ -85,13 +89,83 @@ ul.notes li div small {
     padding: 20px 5px 250px;
 }
 
+div.empty {
+    text-align: center;
+    padding: 20px;
+}
+
 /* bootstrap form begin */
 
-/* bootstrap form end */
+.form-group.required label:after {
+    content: '*';
+    color: #ed5565;
+    margin-left: 0.5em;
+}
+
+.form-horizontal .form-group > label {
+    text-align: right;
+}
+
+.form-horizontal .form-group.required label:before {
+    content: '*';
+    color: #ed5565;
+    margin-right: 0.5em;
+}
+
+.form-horizontal .form-group.required label.custom-file-label:before {
+    display: none;
+}
+
+.form-horizontal .form-group.required label:after {
+    display: none;
+}
+
+.form-horizontal .form-group .form-inline {
+    padding: 7px 0;
+}
 
 .form-control, .single-line {
     border-radius: 3px;
 }
+
+.has-error .tabs-container .nav-tabs {
+    border-bottom: 1px solid #ed5565;
+}
+
+.has-error .tabs-container .panel-body {
+    border: 1px solid #ed5565;
+}
+
+.has-error .tabs-container .nav-tabs > li.active > a,
+.has-error .tabs-container .nav-tabs > li.active > a:hover,
+.has-error .tabs-container .nav-tabs > li.active > a:focus {
+    border: 1px solid #ed5565;
+    border-bottom-color: transparent;
+}
+
+.has-error .tabs-container .tab-pane .panel-body {
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.has-error .help-block {
+    display: none;
+}
+
+.has-error .help-block.help-block-error {
+    display: block;
+}
+
+.input-group > .form-control ~ .input-group-addon {
+    border-left: none;
+}
+
+.input-group > .input-group-addon ~ .form-control {
+    border-left: none;
+}
+
+/* bootstrap form end */
 
 /* page header begin */
 
@@ -230,8 +304,53 @@ ul.notes li div small {
     margin: -2px 0 0;
 }
 
+.column-fixed {
+    position: sticky;
+    background: #ffffff;
+    right: 0;
+}
 
 /* Table Beauty end */
+
+/* Table begin */
+
+.ibox-content.no-padding .table:last-of-type {
+    margin-bottom: 0;
+}
+
+.ibox-content.no-padding .detail-view {
+    border: none;
+}
+
+.ibox-content.no-padding .detail-view tbody tr {
+    background: none;
+}
+
+.ibox-content.no-padding .detail-view > tbody > tr > td {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.ibox-content.no-padding .detail-view > tbody > tr > th {
+    border-top: none;
+    border-left: none;
+    width: 25%;
+    word-break: keep-all;
+    text-align: right;
+}
+
+.ibox-content.no-padding .detail-view > tbody > tr:last-child > th,
+.ibox-content.no-padding .detail-view > tbody > tr:last-child > td {
+    border-bottom: none;
+}
+
+.table-layout-fix > thead > tr > th:last-child,
+.table-layout-fix > tbody > tr > td:last-child {
+    text-align: right;
+}
+
+/* Table end */
 
 /* input begin */
 
@@ -290,7 +409,7 @@ ul.notes li div small {
 
 /* grid sort begin */
 
-.grid-sort {
+.grid-sort{
     padding: 0px;
     margin: 0px;
     list-style: none;
@@ -299,14 +418,14 @@ ul.notes li div small {
     text-align: center;
 }
 
-.grid-sort:after {
+.grid-sort:after{
     content: ' ';
     font-size: 0px;
     clear: both;
     display: block;
 }
 
-.sort-item {
+.sort-item{
     display: inline-block;
     width: 219px;
     height: 115px;
@@ -317,12 +436,12 @@ ul.notes li div small {
     border: 1px solid #7f7f7f;
 }
 
-.sort-item img {
+.sort-item img{
     width: 218px;
     height: 114px;
 }
 
-.grid-name {
+.grid-name{
     width: 100%;
     line-height: 30px;
     background: rgba(0, 0, 0, 0.5);
@@ -330,7 +449,7 @@ ul.notes li div small {
     position: absolute;
     left: 0;
     bottom: 0;
-    color: #ffffff;
+    color: #fff;
     font-size: 14px;
 }
 
@@ -338,11 +457,11 @@ ul.notes li div small {
 
 /* Medium Editor begin */
 
-.medium-editor-anchor-preview, .medium-editor-toolbar {
-    z-index: 2002 !important;
+.medium-editor-anchor-preview, .medium-editor-toolbar{
+    z-index: 2002!important;
 }
 
-.is-tiny-editor {
+.is-tiny-editor{
     height: 124px;
     overflow: auto;
 }
@@ -358,3 +477,186 @@ ul.notes li div small {
 
 
 /* data picker end  */
+
+/* table begin */
+
+.table > thead > tr > th > a {
+    display: inline-block;
+    position: relative;
+    padding-right: 2em;
+    color: #212529;
+}
+
+.table > thead > tr > th > a:before,
+.table > thead > tr > th > a:after {
+    position: absolute;
+    bottom: 0.2em;
+    display: block;
+    opacity: 0.3;
+}
+
+.table > thead > tr > th > a:before {
+    right: 1em;
+    content: "\2191";
+}
+
+.table > thead > tr > th > a:after {
+    right: 0.5em;
+    content: "\2193";
+}
+
+.table > thead > tr > th > a.asc:before {
+    opacity: 1;
+}
+
+.table > thead > tr > th > a.desc:after {
+    opacity: 1;
+}
+
+.table-layout-fix > thead > tr > th,
+.table-layout-fix > tbody > tr > th,
+.table-layout-fix > tfoot > tr > th,
+.table-layout-fix > thead > tr > td,
+.table-layout-fix > tbody > tr > td,
+.table-layout-fix > tfoot > tr > td {
+    vertical-align: middle;
+    word-break: keep-all;
+}
+
+.table-layout-fix > tbody > tr > td > img {
+    max-height: 100px;
+    max-width: 80px;
+}
+
+/* table end */
+
+/* btn begin */
+
+.btn-group-vertical a.btn {
+    position: relative;
+}
+
+.btn-group-vertical a.btn > span.label {
+    position: absolute;
+    right: -1em;
+}
+
+/* btn end */
+
+/* height begin */
+
+.mh-200 {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.mh-400 {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.mh-600 {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* height end */
+
+/* chosen begin */
+.is-invalid ~ .chosen-container-single > .chosen-single {
+    border-color: #dc3545;
+}
+
+.is-valid ~ .chosen-container-single > .chosen-single {
+    border-color: #28a745;
+}
+/* chosen end */
+
+/* is invalid begin */
+
+.is-invalid .invalid-feedback {
+    display: block;
+}
+
+/* is invalid end */
+
+/* progress begin */
+.progress {
+    position: relative;
+}
+
+.progress-bar::before {
+    content: attr(aria-valuenow)"%";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    z-index: 2;
+}
+
+.progress-bar::after {
+    content: attr(aria-valuenow)"%";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    -webkit-text-stroke: 1px #fff;
+    z-index: 1;
+}
+/* progress end */
+
+/* field area begin */
+
+.field-area {
+    padding: 30px 15px 0;
+    border: 1px solid #e7eaec;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    margin-top: 15px;
+    position: relative;
+}
+
+.field-area h4 {
+    position: absolute;
+    top: -0.5rem;
+    margin-top: 0;
+    padding: 0 1rem;
+    background: #fff;
+}
+
+.form-list-item {
+    position: relative;
+}
+
+.form-list-item img {
+    max-height: 80px;
+    max-width: 200px;
+}
+
+.form-list-edit {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    position: absolute;
+    top: 50%;
+    margin-top: -25px;
+    right: 25px;
+    text-align: center;
+    line-height: 50px;
+    color: #ffffff;
+    display: none;
+}
+
+.form-list-item:hover .form-list-edit {
+    display: inline-block;
+}
+
+.form-list-edit:hover {
+    color: #ffffff;
+}
+
+/* field area end */

@@ -2,21 +2,23 @@
 
 namespace ijony\admin\grid;
 
-use ijony\admin\assets\FootableAsset;
 use ijony\helpers\Image;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\jui\SortableAsset;
+use yii\jui\JuiAsset;
 use yii\web\View;
 
 class GridSort extends \yii\grid\GridView
 {
 
     public $dataUrl = '';
+
     public $options = ['class' => 'ibox-content'];
+
     public $tableOptions = ['class' => 'table table-striped'];
+
     public $layout = "{items}";
 
     public function init()
@@ -60,7 +62,7 @@ $('#grid-sort').sortable({
 JS;
 
         Yii::$app->getView()->registerJs($js, View::POS_READY, 'grid-sort');
-        SortableAsset::register(Yii::$app->getView());
+        JuiAsset::register(Yii::$app->getView());
     }
 
     /**
@@ -80,11 +82,20 @@ JS;
         return Html::tag('form', $content, ['id' => 'sort-form']);
     }
 
+    /**
+     * Creates column objects and initializes them.
+     */
+    protected function initColumns()
+    {
+        if (!isset($this->columns['image']) || !isset($this->columns['key'])) {
+            throw new InvalidConfigException('The "image" "sort" and "key" property must be set in columns.');
+        }
+    }
+
     public function renderItem($model)
     {
         $key = $model->{$this->columns['key']};
         $image = $model->{$this->columns['image']};
-        $image = Image::getImg($image);
         $content[] = <<<HTML
     <div class="grid-preview">
         <img src="$image" />
@@ -100,15 +111,5 @@ HTML;
         }
 
         return Html::tag('li', implode("\n", $content), ['class' => 'sort-item']);
-    }
-
-    /**
-     * Creates column objects and initializes them.
-     */
-    protected function initColumns()
-    {
-        if (!isset($this->columns['image']) || !isset($this->columns['key'])) {
-            throw new InvalidConfigException('The "image" "sort" and "key" property must be set in columns.');
-        }
     }
 }

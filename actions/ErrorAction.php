@@ -11,6 +11,7 @@ use Yii;
 use yii\base\Action;
 use yii\base\Exception;
 use yii\base\UserException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**

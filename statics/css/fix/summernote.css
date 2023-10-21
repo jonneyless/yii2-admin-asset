@@ -14,13 +14,22 @@
     border: none;
     border-bottom: 1px solid #e7eaec;
 }
-.note-editor.note-frame{
-    border: 1px solid #e7eaec;
+.note-editor.note-frame {
+    border: 1px solid #e7eaec !important;
 }
+
 .note-editor.panel {
     margin-bottom: 0;
 }
 
-.panel-heading.note-toolbar{
+.panel-heading.note-toolbar {
     border-bottom: 1px solid #e7eaec;
+}
+
+.note-editor.note-frame .note-status-output {
+    height: 11px;
+}
+
+.note-editor .note-toolbar .note-dropdown-menu, .note-popover .popover-content .note-dropdown-menu {
+    min-width: 10px;
 }

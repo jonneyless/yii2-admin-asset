@@ -1,182 +1,145 @@
-$(document).ready(function(){
-    if($(this).width() < 769){
-        $('body').addClass('body-small');
-    }else{
-        $('body').removeClass('body-small');
+$(document).ready(function () {
+  // 窄版列表modal
+  let $modalTemplateList = $('<div id="modal-list" class="modal fade" style="display: none;">').append($('<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">').append($('<div class="modal-content">').append($('<div class="modal-header">').append($('<h3 class="modal-title" id="modal-list-title"></h3>')).append($('<button type="button" class="close" data-dismiss="modal" aria-label="Close">').append($('<span aria-hidden="true">').text('x')))).append($('<div class="modal-body">')).append($('<div class="modal-footer">').append($('<button type="button" class="btn btn-primary" data-dismiss="modal">').text('确定')))));
+  // 宽版列表modal
+  let $modalTemplateListLarge = $('<div id="modal-list-large" class="modal fade" style="display: none;">').append($('<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">').append($('<div class="modal-content">').append($('<div class="modal-header">').append($('<h3 class="modal-title" id="modal-list-title"></h3>')).append($('<button type="button" class="close" data-dismiss="modal" aria-label="Close">').append($('<span aria-hidden="true">').text('x')))).append($('<div class="modal-body">')).append($('<div class="modal-footer">').append($('<button type="button" class="btn btn-primary" data-dismiss="modal">').text('确定')))));
+  // 详情modal
+  let $modalTemplateDetail = $('<div id="modal-detail" class="modal fade" style="display: none;">').append($('<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">').append($('<div class="modal-content">').append($('<div class="modal-body">'))));
+  // Json modal
+  let $modalTemplateJson = $('<div id="modal-json" class="modal fade" style="display: none;">').append($('<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">').append($('<div class="modal-content">').append($('<div class="modal-body">'))));
+  // modal map
+  let $modalTemplateMap = {
+    "#modal-list": $modalTemplateList,
+    "#modal-list-large": $modalTemplateListLarge,
+    "#modal-detail": $modalTemplateDetail,
+    "#modal-json": $modalTemplateJson
+  };
+  let ModalLink = $('a[data-act="modal"]');
+  // 遍历页面初始化 modal
+  ModalLink.each(function () {
+    let target = $(this).data('target');
+    let url = $(this).attr('href');
+    $(this).data('modal-link', url).attr('href', 'javascript:;');
+    if ($(target).length > 0) {
+      return;
     }
-
-    $('#side-menu').metisMenu();
-    // Collapse ibox function
-    $(document).on('click', '.collapse-link', function () {
-        var ibox = $(this).closest('div.ibox');
-        var button = $(this).find('i');
-        var content = ibox.children('.ibox-content');
-        content.slideToggle(200);
-        button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-        ibox.toggleClass('').toggleClass('border-bottom');
-        setTimeout(function () {
-            ibox.resize();
-            ibox.find('[id^=map-]').resize();
-        }, 50);
+    $('body').append($modalTemplateMap[target]);
+    $(target).on('hidden.bs.modal', function (event) {
+      $(target).find('.modal-title').text('');
+      $(target).find('.modal-body').html('');
     });
-    // Close ibox function
-    $(document).on('click', '.close-link', function () {
-        var content = $(this).closest('div.ibox');
-        content.remove();
-    });
-    // Fullscreen ibox function
-    $(document).on('click', '.fullscreen-link', function () {
-        var ibox = $(this).closest('div.ibox');
-        var button = $(this).find('i');
-        $('body').toggleClass('fullscreen-ibox-mode');
-        button.toggleClass('fa-expand').toggleClass('fa-compress');
-        ibox.toggleClass('fullscreen');
-        setTimeout(function () {
-            $(window).trigger('resize');
-        }, 100);
-    });
-
-    $('.sidebar-container').slimScroll({
-        height: '100%',
-        railOpacity: 0.4,
-        wheelStep: 10
-    });
-
-    $('.navbar-minimalize').on('click', function(event){
-        event.preventDefault();
-        $("body").toggleClass("mini-navbar");
-        SmoothlyMenu();
-    });
-
-    function fix_height(){
-        var navbarheight = $('nav.navbar-default').height();
-        var wrapperHeight = $('#page-wrapper').height();
-        var heightWithoutNavbar = $("body > #wrapper").height() - 61;
-
-        $(".sidebar-panel").css("min-height", heightWithoutNavbar + "px");
-
-        if(navbarheight > wrapperHeight){
-            $('#page-wrapper').css("min-height", navbarheight + "px");
-        }
-
-        if(navbarheight < wrapperHeight){
-            $('#page-wrapper').css("min-height", $(window).height() + "px");
-        }
-
-        if($('body').hasClass('fixed-nav')){
-            if(navbarheight > wrapperHeight){
-                $('#page-wrapper').css("min-height", navbarheight + "px");
-            }else{
-                $('#page-wrapper').css("min-height", $(window).height() - 60 + "px");
-            }
-        }
+  });
+  // 弹窗按钮
+  ModalLink.click(function () {
+    let target = $(this).data('target');
+    let title = $(this).attr('title');
+    let url = $(this).data('modal-link');
+    let content = $(this).data('modal-content');
+    if (!title) {
+      title = $(this).data('original-title');
     }
-
-    fix_height();
-
-    $(window).bind("load", function () {
-        if ($("body").hasClass('fixed-sidebar')) {
-            $('.sidebar-collapse').slimScroll({
-                height: '100%',
-                railOpacity: 0.9
-            });
+    if (target === '#modal-json') {
+      eval("data = " + content);
+      $(target).find('.modal-body').html(data);
+      $(target).find('.modal-title').text(title);
+      $(target).modal('show');
+      $(target).find('.modal-body').beautifyJSON({
+        type: "plain"
+      });
+    } else if (url && url !== 'javascript:;') {
+      $.get(url, function (req) {
+        if (req.code !== 0) {
+          return;
         }
-    });
-
-    $(window).bind("resize", function(){
-        if($(this).width() < 769){
-            $('body').addClass('body-small');
-        }else{
-            $('body').removeClass('body-small');
+        if (req.data.html) {
+          $(target).find('.modal-body').html(req.data.html);
         }
+        $(target).find('.modal-title').text(title);
+        $(target).modal('show');
+      }, 'json');
+    } else if (content) {
+      $(target).find('.modal-body').html(content);
+      if (title) {
+        $(target).find('.modal-title').text(title);
+      }
+      $(target).modal('show');
+    }
+    return false;
+  });
+  // 复制按钮
+  $(document).on('click', '[data-copy]', function () {
+    let content = $(this).data('copy');
+    let aux = document.createElement("input");
+    aux.setAttribute("value", content);
+    document.body.appendChild(aux);
+    aux.select();
+    document.execCommand("copy");
+    document.body.removeChild(aux);
+    toastr.success('复制成功');
+  });
+  // 导入按钮
+  $(document).on('click', '[data-import]', function () {
+    let url = $(this).data('import');
+    let form = $('.data-import-form');
+    if (form.length < 1) {
+      form = $('<form>')
+      .attr('class', 'data-import-form')
+      .attr('method', 'post')
+      .attr('enctype', 'multipart/form-data')
+      .hide()
+      .append($('<input>')
+      .attr('type', 'file')
+      .attr('name', 'file'));
+      $('body').append(form);
+    }
+    form.attr('action', url);
+    form.children('input').click().change(function () {
+      let formData = new FormData();
+      formData.append('file', $('.data-import-form > input[name=file]')[0].files[0]);
+      $.ajax({
+        url: url, type: 'POST', cache: false, data: formData, processData: false, contentType: false
+      }).done(function (res) {
+        form.remove();
+      }).fail(function (res) {
+        form.remove();
+      });
     });
-
-    $(window).bind("load resize scroll", function(){
-        if(!$("body").hasClass('body-small')){
-            fix_height();
-        }
-    });
-
-    $(document).tooltip({
-        selector: "[data-toggle=tooltip]",
-        container: "body"
-    });
-
-    $("[data-toggle=popover]").popover();
-    $(document).on('click', "a.btn-ajax", function () {
-        var btn = $(this);
-        var url = $(this).attr('href');
-        $.get(url, function (data) {
-            if (data.error) {
-                toastr.error(data.msg);
+  });
+  $('body').everyTime('5s', 'message-notify', function () {
+    console.log('消息通知');
+    $.post('/api/messages/notify', function (req) {
+      if (req.code === 0 && req.data.items) {
+        for (let i = 0; i < req.data.items.length; i++) {
+          let type = req.data.items[i].type;
+          let title = req.data.items[i].title;
+          let message = req.data.items[i].message;
+          if (type === 'success') {
+            if (title) {
+              toastr.success(message, title);
             } else {
-                if (data.msg) {
-                    toastr.success(data.msg);
-                }
-                if (data.btn) {
-                    btn.text(data.btn.text);
-                    btn.attr('title', data.btn.text);
-                    if (data.btn.class) {
-                        btn.attr('class', data.btn.class);
-                    }
-                    if (data.btn.href) {
-                        btn.attr('href', data.btn.href);
-                    }
-                }
+              toastr.success(message);
             }
-        }, 'json');
-        return false;
-    });
-
-    $('.full-height-scroll').slimscroll({
-        height: '100%'
-    });
-
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "progressBar": true,
-        "preventDuplicates": false,
-        "positionClass": "toast-top-right",
-        "onclick": null,
-        "showDuration": "400",
-        "hideDuration": "1000",
-        "timeOut": "7000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
-    $(document).on('click', 'a[rel$=picker]', function () {
-        var button = $(this);
-        var type = button.attr('rel');
-        var input = button.closest('.input-group').children('input');
-        if (type == 'datetimepicker') {
-            input.datetimepicker('show');
-        } else {
-            input.datepicker('show');
+          } else if (type === 'info') {
+            if (title) {
+              toastr.info(message, title);
+            } else {
+              toastr.info(message);
+            }
+          } else if (type === 'warning') {
+            if (title) {
+              toastr.warning(message, title);
+            } else {
+              toastr.warning(message);
+            }
+          } else if (type === 'error') {
+            if (title) {
+              toastr.error(message, title);
+            } else {
+              toastr.error(message);
+            }
+          }
         }
-    });
+      }
+    }, 'json');
+  });
 });
-
-function SmoothlyMenu(){
-    if(!$('body').hasClass('mini-navbar') || $('body').hasClass('body-small')){
-        // Hide menu in order to smoothly turn on when maximize menu
-        $('#side-menu').hide();
-        // For smoothly turn on menu
-        setTimeout(
-            function(){
-                $('#side-menu').fadeIn(400);
-            }, 200);
-    }else if($('body').hasClass('fixed-sidebar')){
-        $('#side-menu').hide();
-        setTimeout(
-            function(){
-                $('#side-menu').fadeIn(400);
-            }, 100);
-    }else{
-        // Remove all inline style from jquery fadeIn function to reset menu state
-        $('#side-menu').removeAttr('style');
-    }
-}
