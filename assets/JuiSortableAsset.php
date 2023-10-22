@@ -10,6 +10,8 @@ use yii\web\AssetBundle;
 class JuiSortableAsset extends AssetBundle
 {
 
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $css = [
         'css/plugins/jquery-ui/jquery-sortable.min.css',
     ];

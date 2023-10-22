@@ -14,6 +14,8 @@ use yii\web\AssetBundle;
 class GridViewEditableAsset extends AssetBundle
 {
 
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $js = [
         'js/plugins/girdViewEditable.js',
     ];

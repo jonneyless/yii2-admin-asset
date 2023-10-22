@@ -10,6 +10,8 @@ use yii\web\AssetBundle;
 class ChosenAsset extends AssetBundle
 {
 
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $css = [
         'css/plugins/chosen/chosen.min.css',
         'css/plugins/chosen/bootstrap-chosen.css',

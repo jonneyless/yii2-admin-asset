@@ -10,6 +10,8 @@ use yii\web\AssetBundle;
 class TypeaheadAsset extends AssetBundle
 {
 
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
+
     public $js = [
         'js/plugins/typehead/bootstrap3-typeahead.min.js',
     ];
