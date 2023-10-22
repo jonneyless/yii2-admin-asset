@@ -9,9 +9,7 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-
-    public $baseUrl = '@web';
+    public $sourcePath = '@vendor/jonneyless/yii2-admin-asset/statics';
 
     public $css = [
         'font-awesome/css/font-awesome.css',
@@ -21,11 +19,9 @@ class AppAsset extends AssetBundle
     ];
 
     public $js = [
-        'js/jquery.timers.js',
         'js/popper.min.js',
         'js/inspinia.js',
         'js/plugins/pace/pace.min.js',
-        'js/common.js',
     ];
 
     public $depends = [

@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php $this->beginContent('@app/views/layouts/main-full.php');?>
-    <div class="middle-box loginscreen">
+    <div class="middle-box loginscreen animated fadeInDown">
         <div>
             <div>
                 <h1 class="logo-name">登录</h1>
