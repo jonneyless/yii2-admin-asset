@@ -454,7 +454,7 @@ JS;
     public function select(array $options = [])
     {
         $model = $this->model;
-        $model = $model::class;
+        $model = $model::className();
         $inputName = Html::getInputName($this->model, $this->attribute);
         $valueId = Html::getAttributeValue($this->model, $this->attribute);
 
