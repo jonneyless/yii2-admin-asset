@@ -453,23 +453,24 @@ JS;
      */
     public function select(array $options = [])
     {
-        $idField = $this->model::primaryKey();
-        $idField = current($idField);
-
+        $model = $this->model;
+        $model = $model::class;
         $inputName = Html::getInputName($this->model, $this->attribute);
         $valueId = Html::getAttributeValue($this->model, $this->attribute);
 
-        if (isset($options['class'])) {
+        if(isset($options['class'])){
             $model = $options['class'];
-            $modelData = $model::findOne([$idField => $valueId]);
+            $modelData = $model::findOne($valueId);
             $ids = [0];
-            if ($modelData) {
+            if($modelData){
                 $ids = $modelData->getParentIds();
             }
             $exclude = 0;
-        } else {
+        }else{
+            $primaryKey = $model::primaryKey();
+            $primaryKey = current($primaryKey);
             $ids = $this->model->getParentIds();
-            $exclude = $this->model->$idField ? : 0;
+            $exclude = $this->model->$primaryKey ? $this->model->$primaryKey : 0;
         }
 
         $selects = [];
@@ -482,7 +483,7 @@ JS;
                 $id = $valueId;
             }
 
-            $data = $this->model::getSelectData($parentId, $exclude);
+            $data = $model::getSelectData($parentId, $exclude);
             if ($data) {
                 $params = [
                     'class' => 'form-control form-control-inline',
