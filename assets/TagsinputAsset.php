@@ -22,6 +22,6 @@ class TagsinputAsset extends AssetBundle
     ];
 
     public $depends = [
-        'admin\assets\TypeaheadAsset',
+        'ijony\admin\assets\TypeaheadAsset',
     ];
 }
