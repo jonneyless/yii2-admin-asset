@@ -452,7 +452,7 @@ JS;
      */
     public function select(array $options = [])
     {
-        $idField = $this->model->getIdField();
+        $idField = $this->model::primaryKey();
         $idField = current($idField);
 
         $inputName = Html::getInputName($this->model, $this->attribute);
